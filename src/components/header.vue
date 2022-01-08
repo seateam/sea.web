@@ -1,5 +1,5 @@
 <template>
-  <header class="unipass-header">
+  <header class="sea-header">
     <div class="header-box">
       <div class="left">
         <i class="iconfont icon-back"></i>

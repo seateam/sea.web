@@ -4,7 +4,7 @@ import routes from "virtual:generated-pages";
 
 import App from "/src/app.vue";
 
-import "/src/assets/css/main.stylus";
+import "/src/assets/css/main.scss";
 
 const router = createRouter({ history: createWebHistory(), routes });
 const app = createApp(App);

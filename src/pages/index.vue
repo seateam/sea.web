@@ -1,10 +1,11 @@
 <template>
-  <router-link to="/about">About</router-link>
-  <el-button @click="bindTest">Test Button</el-button>
+  <el-input></el-input>
 </template>
 
 <script setup lang="ts">
+const route = useRoute()
+const router = useRouter()
 const bindTest = () => {
-  console.log('🌊', 'Test')
+  console.log('🌊', "Test")
 }
 </script>
