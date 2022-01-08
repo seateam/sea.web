@@ -1,0 +1,33 @@
+:root {
+    --primary: #5575ff;
+    --text-primary: #333333;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+html {
+    color: var(--text-primary);
+    background: #EAEEF1;
+    font-size: 16px;
+    font-weight: 500;
+    word-spacing: 1px;
+    word-break: break-word;
+}
+
+a {
+    cursor: pointer;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+// iconfont
+.icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
