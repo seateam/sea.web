@@ -1,5 +1,6 @@
 <template>
   <div id="page-index">
+    <el-button @click="bindTest">测试</el-button>
     <div class="logo">
       <div
         class="btn left"
@@ -60,6 +61,11 @@
 </template>
 
 <script setup lang="ts">
+import api from '/src/assets/js/api'
+const bindTest = async () => {
+  const res = await api.post('/v3/userDefault.get')
+  console.log('🌊', res)
+}
 const sugArr = ref([])
 const engineArr = ref([])
 const sugNow = ref(0)

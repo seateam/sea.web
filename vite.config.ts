@@ -21,6 +21,6 @@ export default defineConfig({
   ],
   server: {
     host: true,
-    port: 2021,
+    port: 2020,
   },
 });
