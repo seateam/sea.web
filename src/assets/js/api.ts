@@ -1,5 +1,12 @@
 import axios from "axios";
 
+declare module "axios" {
+  interface AxiosResponse<T = any> {
+    ok: boolean;
+    msg: string;
+  }
+}
+
 const api = axios.create({
   baseURL: "https://api.sea.team",
   timeout: 25000,
@@ -30,7 +37,7 @@ api.interceptors.response.use(
     // 对响应错误做点什么
     return {
       ok: false,
-      err,
+      data: err,
       msg: "request error",
     };
   }

@@ -1,6 +1,9 @@
 <template>
   <div id="page-index">
-    <el-button @click="bindTest">测试</el-button>
+    <div>
+      <el-button @click="user.login">登录{{ user.name }}</el-button>
+      <el-button @click="user.exit">退出{{ user.name }}</el-button>
+    </div>
     <div class="logo">
       <div
         class="btn left"
@@ -61,11 +64,8 @@
 </template>
 
 <script setup lang="ts">
-import api from '/src/assets/js/api'
-const bindTest = async () => {
-  const res = await api.post('/v3/userDefault.get')
-  console.log('🌊', res)
-}
+import { useUserStore } from '/src/stores/user'
+const user = useUserStore()
 const sugArr = ref([])
 const engineArr = ref([])
 const sugNow = ref(0)
