@@ -13,10 +13,14 @@
     "lib": ["esnext", "dom"],
     "types": ["element-plus/global", "vite/client", "vite-plugin-pages/client"],
     "paths": {
-      "/*": ["./*"],
-      "@/*": ["./src*"],
-      "~/*": ["./src*"]
+      "/*": ["./*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/pages/index/contextmenu.js"
+  ]
 }

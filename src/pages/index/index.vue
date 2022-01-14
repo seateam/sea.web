@@ -110,9 +110,9 @@
 </template>
 
 <script lang="ts">
-import Sea from '../assets/js/bigsea'
+import Sea from '../../assets/js/bigsea'
 // import draggable from 'vuedraggable'
-// import contextmenu from '@/pages/index/contextmenu.js'
+// import contextmenu from './contextmenu.js'
 declare global {
   interface Window {
     sogou: any
