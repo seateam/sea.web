@@ -1,9 +1,18 @@
 <template>
-  <div id="page-index">
-    <div>
-      <el-button @click="user.login">登录{{ user.name }}</el-button>
-      <el-button @click="user.exit">退出{{ user.name }}</el-button>
-    </div>
+  <div id="Index">
+    <!-- 右键菜单 -->
+    <!-- <context-menu
+      :show="contextMenuShow"
+      :offset="contextMenuOffset"
+      @update:show="contextMenuHide"
+    >
+      <template>
+        <li @click="bindEngineDel">删除</li>
+      </template>
+      <template v-if="!isPC">
+        <li @click="contextMenuDrag">{{ contextMenuDragText }}</li>
+      </template>
+    </context-menu>-->
     <div class="logo">
       <div
         class="btn left"
@@ -50,7 +59,7 @@
         <icon name="search" />
       </div>
     </div>
-    <div class="sug" v-show="showSug" @mouseout="sugNow = -1">
+    <div class="sug" v-show="showSug" @mouseout="sugNow = null">
       <div
         @mouseover="sugNow = i"
         class="one"
@@ -60,36 +69,292 @@
         :key="i"
       >{{ e }}</div>
     </div>
+    <!-- <draggable
+      v-show="!showSug"
+      v-bind="$store.state.draggable"
+      class="user-engines"
+      :list="engines"
+      draggable=".drag"
+      @update="bindUpdate"
+    >
+      <div
+        class="engine drag"
+        :class="{ active: engineNow.id === engine.id }"
+        :style="{ color: engineNow.id === engine.id ? engine.color : '' }"
+        v-for="(engine, i) in engines"
+        :key="engine.id"
+        @click="bindEngine(i)"
+        @contextmenu="bindContextMenuShow($event, i)"
+        @touchstart="bindContextMenuStart($event, i)"
+        @touchmove="bindContextMenuMove"
+        @touchend="bindContextMenuEnd"
+      >
+        <icon-app :name="engine.icon || 'shalou'" />
+        <span>{{ engine.name }}</span>
+      </div>
+      <template slot="footer">
+        <div class="engine add" @click="bindEngineAdd">+</div>
+        <div class="engine empty"></div>
+        <div class="engine empty"></div>
+        <div class="engine empty"></div>
+        <div class="engine empty"></div>
+        <div class="engine empty"></div>
+        <div class="engine empty"></div>
+      </template>
+    </draggable>-->
+    <div class="cloud" v-if="user || userDefault" v-show="!showSug">
+      <!-- <Task mode="task" /> -->
+    </div>
+    <!-- <EngineStore v-if="user || userDefault" :show="engineStoreShow" @updateEngine="updateEngine" /> -->
   </div>
 </template>
 
-<script setup lang="ts">
-import { useUserStore } from '/src/stores/user'
-const user = useUserStore()
-const sugArr = ref([])
-const engineArr = ref([])
-const sugNow = ref(0)
-const engineIndex = ref(0)
-const keyword = ref('')
-const showSug = ref(false)
-const inputFocus = ref(false)
-const GreatWallOut = ref(false)
-const engineNow = ref({ placeholder: '', outwall: false, icon: 'juejin', name: '掘金' })
-// const engineNow = ref({ placeholder: '', outwall: false, icon: 'sougou', name: '搜狗' })
-const bindSearch = (e: any) => { }
-const bindClear = (e: any) => { }
-const bindKeyDown = (e: any) => { }
-const bindKeyUp = (e: any) => { }
-const bindInput = (e: any) => { }
-const bindFocus = (e: any) => { }
-const bindBlur = (e: any) => { }
-const bindPrev = (e: any) => { }
-const bindLogo = (e: any) => { }
-const bindNext = (e: any) => { }
+<script lang="ts">
+import Sea from '../assets/js/bigsea'
+// import draggable from 'vuedraggable'
+// import contextmenu from '@/pages/index/contextmenu.js'
+declare global {
+  interface Window {
+    sogou: any
+  }
+}
+export default {
+  name: 'Index',
+  // mixins: [contextmenu],
+  components: {
+    // draggable,
+    // Task: () => import('@/pages/index/task.vue'),
+    // EngineStore: () => import('@/pages/index/engineStore.vue'),
+  },
+  computed: {
+    GreatWallOut() {
+      return this.$store.state.GreatWallOut
+    },
+    showSug() {
+      return this.inputFocus && this.sugArr.length
+    },
+    user() {
+      return this.$store.state.user
+    },
+    userDefault() {
+      return this.$store.state.userDefault
+    },
+    engineArr() {
+      return this.$store.state.engineArr
+    },
+    engineNow() {
+      return this.engineArr[this.engineIndex]
+    },
+    engineIndex() {
+      return this.$store.state.engineIndex
+    },
+  },
+  data() {
+    return {
+      inputFocus: false,
+      sugArr: [],
+      sugNow: null,
+      keyword: '',
+      // 禁用任务
+      disabledTask: false,
+      // 搜索引擎商店
+      engineStoreShow: '',
+      engines: this.$store.state.engineArr,
+    }
+  },
+  methods: {
+    bindUpdate() {
+      this.contextMenuDragEnd()
+      this.enginesSave()
+    },
+    bindEngine(index) {
+      this.$store.state.engineArr = this.engines
+      this.$store.state.engineIndex = index
+    },
+    bindEngineAdd() {
+      // 检查登录
+      // if (Sea.Vue.login()) return
+      this.engineStoreShow = Date.now() + ',engineAdd'
+    },
+    // 上一个搜索引擎
+    bindPrev() {
+      this.$store.state.engineIndex = this.engineIndex - 1
+    },
+    // 下一个搜索引擎
+    bindNext() {
+      this.$store.state.engineIndex = this.engineIndex + 1
+    },
+    bindClear() {
+      this.$store.state.keyword = ''
+      this.keyword = ''
+      this.sugArr = []
+      this.sugNow = null
+    },
+    bindSearch(value) {
+      let keyword = encodeURIComponent(value || this.keyword)
+      const engine = this.engineNow
+      let url = ''
+      if (this.$store.state.isPC) {
+        url = engine.pc
+        // 有关键字
+        if (keyword) {
+          url = url.replace(Sea.re('#{keyword}'), keyword)
+        } else {
+          url = engine.home_pc || (new URL(url)).origin
+        }
+      } else {
+        url = engine.mobile || engine.pc
+        // 有关键字
+        if (keyword) {
+          url = url.replace(Sea.re('#{keyword}'), keyword)
+        } else {
+          url = engine.home_mobile || (new URL(url)).origin
+        }
+      }
+      if (!engine.pc && engine.app) {
+        this.$alert('该引擎只有APP端可用', '提示', {
+          confirmButtonText: '确定',
+        })
+        return
+      }
+      Sea.open(url)
+    },
+    bindKeyDown(event) {
+      // 解决光标bug
+      if (event.keyCode === 38) {
+        event.preventDefault()
+      }
+    },
+    bindKeyUp(event) {
+      let code = event.keyCode
+      let now = this.sugNow === null ? -1 : this.sugNow
+      let len = this.sugArr.length
+      if (code === 13) {
+        // 回车
+        this.bindSearch()
+      } else if (code === 38) {
+        // 上
+        this.sugNow = (now + len - 1) % len
+        this.keyword = this.sugArr[this.sugNow]
+        // 下
+      } else if (code === 40) {
+        this.sugNow = (now + len + 1) % len
+        this.keyword = this.sugArr[this.sugNow]
+      }
+    },
+    bindInput() {
+      const value = this.keyword
+      if (!value) {
+        this.sugArr = []
+        this.sugNow = null
+        return
+      }
+      // 缓存关键字
+      this.$store.state.keyword = value
+      const url = 'https://www.sogou.com/suggnew/ajajjson?type=web&key=' + encodeURI(value)
+      const script = document.createElement('script')
+      script.src = url
+      const sug = Sea(this.$refs.sug)
+      sug.child().remove()
+      sug.appendChild(script)
+    },
+    bindFocus() {
+      this.inputFocus = true
+      if (this.keyword && this.sugArr.length === 0) {
+        this.bindInput()
+      }
+    },
+    bindBlur() {
+      this.inputFocus = false
+    },
+    bindLogo() {
+      this.engineStoreShow = Date.now() + ',logo'
+    },
+    updateEngine(engine) {
+      // 添加常用搜索引擎
+      let type = this.engineStoreShow.split(',')[1]
+      if (type === 'engineAdd') {
+        if (this.engines.find((e) => e.id === engine.id)) {
+          this.$message.info('已经有了')
+        } else {
+          this.engines.push(engine)
+          this.enginesSave()
+        }
+      } else {
+        if (this.$refs.search) {
+          this.$refs.search.select()
+        }
+      }
+    },
+    bindEngineDel() {
+      // 检查登录
+      // if (Sea.Vue.login()) return
+      const l = this.engines.length
+      // 最后一个
+      if (l === 1) {
+        this.$message.info('最后一个，星星之火，可以燎原。')
+        this.contextMenuHide()
+        return
+      }
+      const i = this.contextMenuData
+      const index = this.engineIndex
+      // 前面减一 & 删除最后一个
+      if (index > i || index === l - 1) {
+        this.$store.state.engineIndex = index - 1
+        // 后面啥也不干
+      }
+      // 删除
+      this.engines.splice(i, 1)
+      this.contextMenuHide()
+      this.enginesSave()
+    },
+    enginesSave() {
+      // if (Sea.Vue.login()) return
+      const engine = Sea.deepCopy(this.engines).map((e) => e.id)
+      Sea.Ajax({
+        method: 'post',
+        url: '/v3/user.engine',
+        data: {
+          engine: engine,
+        },
+      }).then((res) => {
+        if (res.ok) {
+          // this.$message.success(res.msg)
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    init() {
+      this.keyword = this.$store.state.keyword || ''
+      this.updateEngine()
+    },
+  },
+  beforeCreate() {
+    // 搜狗 jsonp 提示
+    window.sogou = {
+      sug: (data) => {
+        const arr = data[1]
+        this.sugArr = arr
+        this.sugNow = null
+      },
+    }
+  },
+  async created() {
+    // this.init()
+    // // 验证登录
+    // await this.$store.dispatch('actionUser')
+    // const user = this.user || this.userDefault
+    // this.engines = user.engine
+    // this.bindEngine(0)
+  },
+}
 </script>
 
+<script setup lang="ts"></script>
+
 <style lang="scss">
-#page-index {
+#Index {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -117,11 +382,15 @@ const bindNext = (e: any) => { }
     }
 
     .center {
+      // transition: all 0.3s;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      // height: 55px;
+      // line-height: 55px;
+      // max-width: 211px;
       width: 211px;
       color: #666;
       border-radius: 2px;
@@ -133,10 +402,19 @@ const bindNext = (e: any) => { }
       }
 
       span {
-        margin-top: 2px;
+        // font-size: 14px;
+        line-height: 22px;
+        // font-weight: normal;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      // 图片 logo
+      img {
+        box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+        width: 100%;
+        max-height: 100%;
       }
     }
 
@@ -196,7 +474,7 @@ const bindNext = (e: any) => { }
       height: 100%;
       display: flex;
       align-items: center;
-      color: var(--primary);
+      color: #0f60ab;
       padding: 0 10px 0 5px;
       margin-left: 5px;
       margin-right: 6px;

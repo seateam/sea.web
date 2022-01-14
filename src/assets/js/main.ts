@@ -1,13 +1,14 @@
-import { createApp } from "vue";
-import { createPinia } from "pinia";
-import { createRouter, createWebHistory } from "vue-router";
-import routes from "virtual:generated-pages";
+import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import routes from 'virtual:generated-pages'
+import pinia from './pinia'
+import vuex from './vuex'
 
-import App from "/src/app.vue";
+import App from '/src/app.vue'
 
-import "/src/assets/css/main.scss";
+import '/src/assets/css/main.scss'
 
-const router = createRouter({ history: createWebHistory(), routes });
-const app = createApp(App);
+const router = createRouter({ history: createWebHistory(), routes })
+const app = createApp(App)
 
-app.use(router).use(createPinia()).mount("#app");
+app.use(router).use(pinia).use(vuex).mount('#app')
