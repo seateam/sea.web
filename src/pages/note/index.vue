@@ -7,9 +7,7 @@
         v-for="(e, i) in note"
         :key="i"
         @click="$store.state.noteKind = i"
-      >
-        {{ e.name }}
-      </div>
+      >{{ e.name }}</div>
       <div class="kind add" slot="footer" @click="bindKindAdd">+</div>
     </div>
     <div class="notes" v-if="note[noteNow]" :list="note[noteNow].arr">
@@ -20,9 +18,7 @@
         :style="{ color: e.color }"
         @click="bindNote($event, e)"
         :to="`/note/${e.id}`"
-      >
-        {{ e.title }}
-      </router-link>
+      >{{ e.title }}</router-link>
       <div class="note add" slot="footer" @click="bindNoteAdd">+</div>
     </div>
     <!-- 弹窗 移动分类  -->
@@ -292,34 +288,6 @@ export default {
     .note.add:hover {
       background-color: transparent;
       color: #0f60ab;
-    }
-  }
-}
-
-@media (min-width: 1024px) {
-  #Notes {
-    .kinds {
-      padding-top: 5px;
-      padding-bottom: 5px;
-      margin-left: 20px;
-      margin-right: 20px;
-      justify-content: center;
-
-      .kind {
-        width: 40px;
-        padding: 5px 2px;
-      }
-    }
-
-    .notes {
-      margin: 0 20px;
-      font-size: 6px;
-
-      .note {
-        margin-top: 8px;
-        margin-right: 6px;
-        padding: 2px 4px;
-      }
     }
   }
 }
