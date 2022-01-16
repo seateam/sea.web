@@ -78,15 +78,21 @@
       <div class="engine empty"></div>
       <div class="engine empty"></div>
       <div class="cloud" v-if="user || userDefault" v-show="!showSug">
-        <!-- <Task mode="task" /> -->
+        <Task mode="task" />
       </div>
     </div>
-    <!-- <EngineStore v-if="user || userDefault" :show="engineStoreShow" @updateEngine="updateEngine" /> -->
+    <EngineStore
+      v-if="user || userDefault"
+      :show.sync="engineStoreShow"
+      @updateEngine="updateEngine"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Sea from '../../assets/js/bigsea'
+import Task from '../index/task.vue'
+import EngineStore from '../index/engineStore.vue'
 declare global {
   interface Window {
     sogou: any
@@ -95,8 +101,8 @@ declare global {
 export default {
   name: 'Index',
   components: {
-    // Task: () => import('@/pages/index/task.vue'),
-    // EngineStore: () => import('@/pages/index/engineStore.vue'),
+    Task,
+    EngineStore,
   },
   computed: {
     GreatWallOut() {
@@ -313,12 +319,12 @@ export default {
     }
   },
   async created() {
-    // this.init()
-    // // 验证登录
-    // await this.$store.dispatch('actionUser')
-    // const user = this.user || this.userDefault
-    // this.engines = user.engine
-    // this.bindEngine(0)
+    this.init()
+    // 验证登录
+    await this.$store.dispatch('actionUser')
+    const user = this.user || this.userDefault
+    this.engines = user.engine
+    this.bindEngine(0)
   },
 }
 </script>

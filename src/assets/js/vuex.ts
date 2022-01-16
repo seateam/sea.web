@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 // 浏览器
 import Bowser from 'bowser'
+import api from './api'
 const browser = Bowser.getParser(window.navigator.userAgent).getResult()
 // 创建一个新的 store 实例
 const vuex = createStore({
@@ -135,40 +136,40 @@ const vuex = createStore({
   // 异步更新
   actions: {
     // 获取搜索引擎商店
-    // async actionEngineStore({ commit, state }, refresh) {
-    //   if (!refresh && state.engineStore) {
-    //     return
-    //   }
-    //   let res
-    //   res = await Sea.Ajax({
-    //     method: 'post',
-    //     url: '/v3/engine.list',
-    //   })
-    //   // 登录成功
-    //   if (res.ok) {
-    //     state.engineStore = res.data
-    //   }
-    // },
+    async actionEngineStore({ commit, state }, refresh) {
+      if (!refresh && state.engineStore) {
+        return
+      }
+      let res
+      res = await api.request({
+        method: 'post',
+        url: '/v3/engine.list',
+      })
+      // 登录成功
+      if (res.ok) {
+        state.engineStore = res.data
+      }
+    },
     // 设置 user
-    // async actionUser({ commit, state }, refresh) {
-    //   if (!refresh && (state.user || state.userDefault)) {
-    //     return
-    //   }
-    //   let res
-    //   res = await Sea.Ajax({ method: 'post', url: '/v3/user.get' })
-    //   // 登录成功
-    //   if (res.ok) {
-    //     commit('setUser', res.data)
-    //     commit('setUserDefault', null)
-    //     return
-    //   }
-    //   // 默认用户
-    //   res = await Sea.Ajax({ method: 'post', url: '/v3/userDefault.get' })
-    //   if (res.ok) {
-    //     commit('setUser', null)
-    //     commit('setUserDefault', res.data)
-    //   }
-    // },
+    async actionUser({ commit, state }, refresh) {
+      if (!refresh && (state.user || state.userDefault)) {
+        return
+      }
+      let res
+      res = await api.request({ method: 'post', url: '/v3/user.get' })
+      // 登录成功
+      if (res.ok) {
+        commit('setUser', res.data)
+        commit('setUserDefault', null)
+        return
+      }
+      // 默认用户
+      res = await api.request({ method: 'post', url: '/v3/userDefault.get' })
+      if (res.ok) {
+        commit('setUser', null)
+        commit('setUserDefault', res.data)
+      }
+    },
   },
   // 模块
   modules: {},
