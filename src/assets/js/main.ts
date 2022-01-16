@@ -4,9 +4,9 @@ import routes from 'virtual:generated-pages'
 import pinia from './pinia'
 import vuex from './vuex'
 
-import App from '/src/app.vue'
+import App from '../../app.vue'
 
-import '/src/assets/css/main.scss'
+import '../css/main.scss'
 
 const router = createRouter({ history: createWebHistory(), routes })
 const app = createApp(App)

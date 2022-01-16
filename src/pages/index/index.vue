@@ -1,7 +1,7 @@
 <template>
   <div id="Index">
     <!-- 右键菜单 -->
-    <!-- <context-menu
+    <context-menu
       :show="contextMenuShow"
       :offset="contextMenuOffset"
       @update:show="contextMenuHide"
@@ -12,7 +12,7 @@
       <template v-if="!isPC">
         <li @click="contextMenuDrag">{{ contextMenuDragText }}</li>
       </template>
-    </context-menu>-->
+    </context-menu>
     <div class="logo">
       <div
         class="btn left"
@@ -67,7 +67,9 @@
         v-for="(e, i) in sugArr"
         @mousedown.prevent="bindSearch(e)"
         :key="i"
-      >{{ e }}</div>
+      >
+        {{ e }}
+      </div>
     </div>
     <!-- <draggable
       v-show="!showSug"
@@ -109,10 +111,10 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Sea from '../../assets/js/bigsea'
 // import draggable from 'vuedraggable'
-// import contextmenu from './contextmenu.js'
+import contextmenu from './contextmenu.js'
 declare global {
   interface Window {
     sogou: any
@@ -120,7 +122,7 @@ declare global {
 }
 export default {
   name: 'Index',
-  // mixins: [contextmenu],
+  mixins: [contextmenu],
   components: {
     // draggable,
     // Task: () => import('@/pages/index/task.vue'),
@@ -200,7 +202,7 @@ export default {
         if (keyword) {
           url = url.replace(Sea.re('#{keyword}'), keyword)
         } else {
-          url = engine.home_pc || (new URL(url)).origin
+          url = engine.home_pc || new URL(url).origin
         }
       } else {
         url = engine.mobile || engine.pc
@@ -208,7 +210,7 @@ export default {
         if (keyword) {
           url = url.replace(Sea.re('#{keyword}'), keyword)
         } else {
-          url = engine.home_mobile || (new URL(url)).origin
+          url = engine.home_mobile || new URL(url).origin
         }
       }
       if (!engine.pc && engine.app) {
@@ -351,7 +353,7 @@ export default {
 }
 </script>
 
-<script setup lang="ts"></script>
+<script setup></script>
 
 <style lang="scss">
 #Index {
