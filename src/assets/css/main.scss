@@ -28,8 +28,8 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
 }
 
 a {
@@ -116,45 +116,6 @@ input {
     font-size: inherit;
     padding: 10px;
   }
-}
-
-// 右键菜单
-.context-menu {
-  background: #fff;
-  color: #191919;
-  border-radius: 6px;
-  border: 1px solid #c8ccd3;
-  // box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.4);
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.06);
-  padding: 6px 0;
-  font-size: 14px;
-  user-select: none;
-
-  li {
-    padding: 10px 24px;
-    display: block;
-    cursor: pointer;
-  }
-
-  li:hover {
-    background: #f4f4f4;
-  }
-}
-
-.context-menu-mask {
-  display: none;
-  position: fixed;
-  background: rgba(0, 0, 0, 0.02);
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.context-menu-hover:hover {
-  background: rgba(0, 0, 0, 0.02) !important;
 }
 
 // 图标

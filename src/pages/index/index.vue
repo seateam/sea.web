@@ -1,18 +1,5 @@
 <template>
   <div id="Index">
-    <!-- 右键菜单 -->
-    <context-menu
-      :show="contextMenuShow"
-      :offset="contextMenuOffset"
-      @update:show="contextMenuHide"
-    >
-      <template>
-        <li @click="bindEngineDel">删除</li>
-      </template>
-      <template v-if="!isPC">
-        <li @click="contextMenuDrag">{{ contextMenuDragText }}</li>
-      </template>
-    </context-menu>
     <div class="logo">
       <div
         class="btn left"
@@ -71,14 +58,7 @@
         {{ e }}
       </div>
     </div>
-    <!-- <draggable
-      v-show="!showSug"
-      v-bind="$store.state.draggable"
-      class="user-engines"
-      :list="engines"
-      draggable=".drag"
-      @update="bindUpdate"
-    >
+    <div class="user-engines">
       <div
         class="engine drag"
         :class="{ active: engineNow.id === engine.id }"
@@ -86,35 +66,27 @@
         v-for="(engine, i) in engines"
         :key="engine.id"
         @click="bindEngine(i)"
-        @contextmenu="bindContextMenuShow($event, i)"
-        @touchstart="bindContextMenuStart($event, i)"
-        @touchmove="bindContextMenuMove"
-        @touchend="bindContextMenuEnd"
       >
         <icon-app :name="engine.icon || 'shalou'" />
         <span>{{ engine.name }}</span>
       </div>
-      <template slot="footer">
-        <div class="engine add" @click="bindEngineAdd">+</div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
-      </template>
-    </draggable>-->
-    <div class="cloud" v-if="user || userDefault" v-show="!showSug">
-      <!-- <Task mode="task" /> -->
+      <div class="engine add" @click="bindEngineAdd">+</div>
+      <div class="engine empty"></div>
+      <div class="engine empty"></div>
+      <div class="engine empty"></div>
+      <div class="engine empty"></div>
+      <div class="engine empty"></div>
+      <div class="engine empty"></div>
+      <div class="cloud" v-if="user || userDefault" v-show="!showSug">
+        <!-- <Task mode="task" /> -->
+      </div>
     </div>
     <!-- <EngineStore v-if="user || userDefault" :show="engineStoreShow" @updateEngine="updateEngine" /> -->
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Sea from '../../assets/js/bigsea'
-// import draggable from 'vuedraggable'
-import contextmenu from './contextmenu.js'
 declare global {
   interface Window {
     sogou: any
@@ -122,9 +94,7 @@ declare global {
 }
 export default {
   name: 'Index',
-  mixins: [contextmenu],
   components: {
-    // draggable,
     // Task: () => import('@/pages/index/task.vue'),
     // EngineStore: () => import('@/pages/index/engineStore.vue'),
   },
