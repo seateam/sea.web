@@ -117,7 +117,7 @@ const vuex = createStore({
     // 获取头像
     getUserAvatar(state: any) {
       const user = state.user
-      let avatar = '/imgs/head.png'
+      let avatar = import('../imgs/head.png')
       if (user && user.avatar) {
         avatar = user.avatar
       }

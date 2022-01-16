@@ -99,7 +99,6 @@ declare global {
   }
 }
 export default {
-  name: 'Index',
   components: {
     Task,
     EngineStore,

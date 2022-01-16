@@ -1,5 +1,5 @@
 <template>
-  <div id="AppHeader">
+  <div id="app-header">
     <div class="main" v-show="tabType === 'Tab'">
       <div class="tabs">
         <div
@@ -66,9 +66,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  name: 'AppHeader',
   data() {
     return {
       tabs: this.$store.state.tabs,
@@ -97,37 +96,37 @@ export default {
   },
   methods: {
     bindBook() {
-      Sea.Vue.push('/book')
+      this.$router.push('/book')
     },
     bindCommunism() {
-      Sea.Vue.push('/note/1')
+      this.$router.push('/note/1')
     },
     bindHelp() {
-      Sea.Vue.push('/note/0')
+      this.$router.push('/note/0')
     },
     bindTask() {
-      Sea.Vue.push('/task')
+      this.$router.push('/task')
     },
     bindMask() {
       this.boxShow = false
     },
     bindBack() {
-      Sea.Vue.back()
+      this.$router.back()
     },
     bindTab(i) {
       if (this.tabNow !== i) {
         let path = this.tabs[i].path
         if (this.$route.path !== path) {
           this.tabNow = i
-          Sea.Vue.replace(path)
+          this.$router.replace(path)
         }
       }
     },
     bindLogin() {
-      Sea.Vue.push('/mine')
+      this.$router.push('/mine')
     },
     bindMusic() {
-      Sea.Vue.push('/music')
+      this.$router.push('/music')
     },
     // 暂停
     bindPause() {
@@ -159,12 +158,14 @@ export default {
 }
 </script>
 
+<script setup lang="ts"></script>
+
 <style lang="scss">
 $height: 32px;
 $marginTop: 20px;
 
 // 右侧按钮样式
-.AppHeaderButton {
+.app-header-button {
   margin-top: $marginTop;
   margin-right: 5px;
   margin-left: 5px;
@@ -181,7 +182,7 @@ $marginTop: 20px;
   z-index: 10;
 }
 
-#AppHeader {
+#app-header {
   width: 100%;
 
   .main {

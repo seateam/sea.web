@@ -2,7 +2,7 @@
   <div id="EngineStore" v-show="engineStoreShow">
     <!-- 墙外 -->
     <div
-      class="AppHeaderButton Great-Wall"
+      class="app-header-button Great-Wall"
       :class="{ active: GreatWallOut }"
       @click="bindGreatWall"
     >
@@ -10,14 +10,14 @@
     </div>
     <!-- 商店 -->
     <div
-      class="AppHeaderButton App-Shop"
+      class="app-header-button App-Shop"
       :class="{ active: tagsShow }"
       @click="tagsShow = !tagsShow"
     >
       <icon name="shop" />
     </div>
     <!-- 关闭 -->
-    <div class="AppHeaderButton close" @click="bindClose">
+    <div class="app-header-button close" @click="bindClose">
       <icon name="close" />
     </div>
     <header>
@@ -65,13 +65,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import engineMethod from './engineMethod.js'
 import EngineEdit from './engineEdit.vue'
 import Pinyin from 'pinyin'
 import api from '../../assets/js/api'
+import Sea from '../../assets/js/bigsea.js'
 export default {
-  name: 'EngineStore',
   mixins: [engineMethod],
   components: { EngineEdit },
   props: ['show'],
@@ -164,7 +164,7 @@ export default {
       this.editShow = Date.now()
     },
     bindEngineEdit() {
-      if (Sea.Vue.login()) return
+      // if (Sea.Vue.login()) return
       const i = this.contextMenuData
       const engine = this.enginesFilter[i]
       this.edit = engine
@@ -174,7 +174,7 @@ export default {
     async bindEngineEditCallback(engine) {
       if (this.editType === 'edit') {
         const i = this.engineStore.findIndex((e) => e.id === engine.id)
-        const res = await api.requeset({
+        const res = await api.request({
           method: 'post',
           url: '/v3/engine.update',
           data: {
@@ -190,7 +190,7 @@ export default {
           this.$message.error(res.msg)
         }
       } else if (this.editType === 'add') {
-        const res = await api.requeset({
+        const res = await api.request({
           method: 'post',
           url: '/v3/engine.add',
           data: {
@@ -234,6 +234,8 @@ export default {
 }
 </script>
 
+<script setup lang="ts"></script>
+
 <style lang="scss">
 #EngineStore {
   position: fixed;
@@ -275,20 +277,20 @@ export default {
     }
   }
 
-  .AppHeaderButton.Great-Wall {
+  .app-header-button.Great-Wall {
     right: 30px;
     opacity: 0.4;
     font-size: 26px;
   }
 
-  .AppHeaderButton.App-Shop {
+  .app-header-button.App-Shop {
     font-size: 22px;
     right: 82px;
     opacity: 0.4;
   }
 
-  .AppHeaderButton.App-Shop.active,
-  .AppHeaderButton.Great-Wall.active {
+  .app-header-button.App-Shop.active,
+  .app-header-button.Great-Wall.active {
     opacity: 0.9;
   }
 

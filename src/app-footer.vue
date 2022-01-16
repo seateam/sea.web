@@ -1,26 +1,33 @@
 <template>
-  <div id="AppFooter" v-show="showAppFooter">
+  <div id="app-footer" v-show="showAppFooter">
     <div class="beian">
       <div class="left">
-        <span>© SEA.TEAM 大海团队</span>
+        <router-link to="/note/104">© SEA.TEAM 大海团队</router-link>
       </div>
       <a class="human" href="https://mp.sea.team" target="_blank">
         <icon name="sea" />
       </a>
       <div class="right">
-        <a href="https://beian.miit.gov.cn/">粤ICP备2020105439号</a>
-        <div class="gongan">
-          <img src="/imgs/ghs.png" alt="ghs" />
-          <span>公网安备 44030402004182</span>
-        </div>
+        <a
+          href="https://beian.miit.gov.cn/#/Integrated/recordQuery?icp=%E7%B2%A4ICP%E5%A4%872020105439%E5%8F%B7"
+          target="_blank"
+        >
+          粤ICP备2020105439号
+        </a>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004182"
+          target="_blank"
+          class="ghs"
+        >
+          <img src="./assets/imgs/ghs.png" title="公网安备 44030402004182" />
+        </a>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  name: 'AppFooter',
   data() {
     return {
       tabs: this.$store.state.tabs,
@@ -42,7 +49,7 @@ export default {
 <script setup lang="ts"></script>
 
 <style lang="scss">
-#AppFooter {
+#app-footer {
   user-select: text;
   position: relative;
   display: flex;
@@ -89,15 +96,10 @@ export default {
       display: flex;
       align-items: center;
 
-      .gongan {
-        display: none;
-        align-items: center;
-
-        img {
-          margin: 0 2px;
-          width: 5px;
-          height: 5px;
-        }
+      .ghs {
+        margin-left: 8px;
+        width: 1em;
+        height: 1em;
       }
     }
   }

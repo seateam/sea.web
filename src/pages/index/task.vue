@@ -6,7 +6,6 @@
 import api from '../../assets/js/api'
 import Sea from '../../assets/js/bigsea'
 export default {
-  name: 'Task',
   components: {},
   props: ['mode'],
   data() {
