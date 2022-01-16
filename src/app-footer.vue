@@ -11,9 +11,7 @@
         <a
           href="https://beian.miit.gov.cn/#/Integrated/recordQuery?icp=%E7%B2%A4ICP%E5%A4%872020105439%E5%8F%B7"
           target="_blank"
-        >
-          粤ICP备2020105439号
-        </a>
+        >粤ICP备2020105439号</a>
         <a
           href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402004182"
           target="_blank"
@@ -42,11 +40,11 @@ export default {
     },
   },
   methods: {},
-  created() {},
-  mounted() {},
+  created() { },
+  mounted() { },
 }
 </script>
-<script setup lang="ts"></script>
+<script setup lang="ts">  </script>
 
 <style lang="scss">
 #app-footer {
