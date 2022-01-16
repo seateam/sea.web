@@ -1,9 +1,9 @@
 <template>
   <div id="EngineEdit">
-    <!-- 弹窗 书签 -->
+    <!-- 弹窗 搜索引擎 -->
     <el-dialog
       :title="type === 'add' ? '新建 搜索引擎' : '编辑 搜索引擎'"
-      :visible.sync="dialogShow"
+      v-model="dialogShow"
       custom-class="EngineEdit-dialog"
       append-to-body
       :close-on-click-modal="false"

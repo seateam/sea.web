@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="user">
-        <el-image class="cover" v-if="playing" :src="song.cover" alt="唱片" @click="bindPause" />
+        <el-image v-if="playing" :src="song.cover" class="cover" alt="唱片" @click="bindPause" />
         <div class="yezi" @click="bindBook">
           <icon name="yezi" />
         </div>
