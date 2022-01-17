@@ -2,7 +2,7 @@
   <div id="Notes">
     <div class="kinds" :list="note">
       <div
-        class="kind drag context-menu-hover"
+        class="kind context-menu-hover"
         :class="{ active: noteNow === i }"
         v-for="(e, i) in note"
         :key="i"
@@ -14,7 +14,7 @@
       <router-link
         v-for="(e, i) in note[noteNow].arr"
         :key="i"
-        class="note drag"
+        class="note"
         :style="{ color: e.color }"
         @click="bindNote($event, e)"
         :to="`/note/${e.id}`"

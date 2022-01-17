@@ -54,13 +54,11 @@
         v-for="(e, i) in sugArr"
         @mousedown.prevent="bindSearch(e)"
         :key="i"
-      >
-        {{ e }}
-      </div>
+      >{{ e }}</div>
     </div>
     <div class="user-engines">
       <div
-        class="engine drag"
+        class="engine"
         :class="{ active: engineNow.id === engine.id }"
         :style="{ color: engineNow.id === engine.id ? engine.color : '' }"
         v-for="(engine, i) in engines"
@@ -141,7 +139,6 @@ export default {
   },
   methods: {
     bindUpdate() {
-      this.contextMenuDragEnd()
       this.enginesSave()
     },
     bindEngine(index) {

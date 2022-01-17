@@ -81,22 +81,22 @@ export default {
       edit: null,
       editType: 'edit',
       tagsShow: true,
+      engineStoreShow: false,
     }
   },
-  computed: {
-    engineStoreShow: {
-      get() {
-        return this.$props.show
-      },
-      set(val) {
-        if (val) {
-          Sea('body').css({ overflow: 'hidden' })
-        } else {
-          Sea('body').removeAttr('style')
-        }
-        this.$emit('update:show', val)
-      },
+  watch: {
+    show(nv) {
+      this.engineStoreShow = Boolean(nv)
     },
+    engineStoreShow(nv) {
+      if (nv === true) {
+        Sea('body').css({ overflow: 'hidden' })
+      } else {
+        Sea('body').removeAttr('style')
+      }
+    },
+  },
+  computed: {
     // 过滤
     enginesFilter() {
       let arr = []
@@ -130,6 +130,12 @@ export default {
       }
       return arr
     },
+  },
+  async created() {
+    // 引擎
+    await this.$store.dispatch('actionEngineStore')
+    this.initEngines()
+    // this.bindEngine(0)
   },
   methods: {
     initKindPinyin(e) {
@@ -224,12 +230,6 @@ export default {
       this.bindClose()
       this.$emit('updateEngine', this.enginesFilter[i])
     },
-  },
-  async created() {
-    // 引擎
-    await this.$store.dispatch('actionEngineStore')
-    this.initEngines()
-    // this.bindEngine(0)
   },
 }
 </script>

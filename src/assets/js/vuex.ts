@@ -81,10 +81,6 @@ const vuex = createStore({
       GreatWallOut: window.localStorage.getItem('GreatWallOut') || false,
       // 标题
       title: '',
-      // 拖动配置 https://zhuanlan.zhihu.com/p/84433257
-      draggable: {
-        disabled: true,
-      },
       // 音乐
       song: null,
       songPlaying: false,
