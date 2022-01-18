@@ -1,5 +1,18 @@
 <template>
   <div id="Index">
+    <!-- 右键菜单 -->
+    <!-- <context-menu
+      :show="contextMenuShow"
+      :offset="contextMenuOffset"
+      @update:show="contextMenuHide"
+    >
+      <template>
+        <li @click="bindEngineDel">删除</li>
+      </template>
+      <template v-if="!isPC">
+        <li @click="contextMenuDrag">{{ contextMenuDragText }}</li>
+      </template>
+    </context-menu>-->
     <div class="logo">
       <div
         class="btn left"
@@ -56,38 +69,60 @@
         :key="i"
       >{{ e }}</div>
     </div>
-    <div class="user-engines">
+    <!-- <draggable
+      v-show="!showSug"
+      v-bind="$store.state.draggable"
+      class="user-engines"
+      :list="engines"
+      draggable=".drag"
+      @update="bindUpdate"
+    >
       <div
-        class="engine"
+        class="engine drag"
         :class="{ active: engineNow.id === engine.id }"
         :style="{ color: engineNow.id === engine.id ? engine.color : '' }"
         v-for="(engine, i) in engines"
         :key="engine.id"
         @click="bindEngine(i)"
+        @contextmenu="bindContextMenuShow($event, i)"
+        @touchstart="bindContextMenuStart($event, i)"
+        @touchmove="bindContextMenuMove"
+        @touchend="bindContextMenuEnd"
       >
         <icon-app :name="engine.icon || 'shalou'" />
         <span>{{ engine.name }}</span>
       </div>
-      <div class="engine add" @click="bindEngineAdd">+</div>
-      <div class="engine empty"></div>
-      <div class="engine empty"></div>
-      <div class="engine empty"></div>
-      <div class="engine empty"></div>
-      <div class="engine empty"></div>
-      <div class="engine empty"></div>
-      <div class="cloud" v-if="user || userDefault" v-show="!showSug">
-        <Task mode="task" />
-      </div>
+      <template #footer>
+        <div class="engine add" @click="bindEngineAdd">+</div>
+        <div class="engine empty"></div>
+        <div class="engine empty"></div>
+        <div class="engine empty"></div>
+        <div class="engine empty"></div>
+        <div class="engine empty"></div>
+        <div class="engine empty"></div>
+      </template>
+    </draggable>-->
+    <div class="cloud" v-if="user || userDefault" v-show="!showSug">
+      <Task mode="task" />
     </div>
-    <EngineStore
-      v-if="user || userDefault"
-      :show.sync="engineStoreShow"
-      @updateEngine="updateEngine"
-    />
+    <EngineStore v-if="user || userDefault" :show="engineStoreShow" @updateEngine="updateEngine" />
   </div>
+  <draggable
+    v-model="myArray"
+    group="people"
+    @start="drag = true"
+    @end="drag = false"
+    item-key="id"
+  >
+    <template #item="{ element }">
+      <div>{{ element.name }}</div>
+    </template>
+  </draggable>
 </template>
 
 <script lang="ts">
+import draggable from 'vuedraggable'
+// import contextmenu from '@/pages/index/contextmenu.js'
 import Sea from '../../assets/js/bigsea'
 import Task from '../index/task.vue'
 import EngineStore from '../index/engineStore.vue'
@@ -97,7 +132,10 @@ declare global {
   }
 }
 export default {
+  name: 'Index',
+  // mixins: [contextmenu],
   components: {
+    draggable,
     Task,
     EngineStore,
   },
@@ -126,6 +164,9 @@ export default {
   },
   data() {
     return {
+      myArray: [
+        { name: 123 }
+      ],
       inputFocus: false,
       sugArr: [],
       sugNow: null,
@@ -135,10 +176,13 @@ export default {
       // 搜索引擎商店
       engineStoreShow: '',
       engines: this.$store.state.engineArr,
+      drag: false,
     }
   },
   methods: {
     bindUpdate() {
+      // bigsea
+      // this.contextMenuDragEnd()
       this.enginesSave()
     },
     bindEngine(index) {
