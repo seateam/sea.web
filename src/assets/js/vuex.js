@@ -94,7 +94,7 @@ const vuex = createStore({
   },
   // 获取
   getters: {
-    getUser(state: any) {
+    getUser(state) {
       return state.user
     },
     // 获取 uid
@@ -106,7 +106,7 @@ const vuex = createStore({
       return ''
     },
     // 获取名字
-    getUserName(state: any) {
+    getUserName(state) {
       const user = state.user
       if (user) {
         let nameDefault = `编号${user.id}`
@@ -115,7 +115,7 @@ const vuex = createStore({
       return ''
     },
     // 获取头像
-    getUserAvatar(state: any) {
+    getUserAvatar(state) {
       const user = state.user
       let avatar = '/src/assets/imgs/head.png'
       if (user && user.avatar) {
@@ -126,10 +126,10 @@ const vuex = createStore({
   },
   // 同步更新
   mutations: {
-    setUser(state: any, user) {
+    setUser(state, user) {
       state.user = user
     },
-    setUserDefault(state: any, user) {
+    setUserDefault(state, user) {
       state.userDefault = user
     },
   },

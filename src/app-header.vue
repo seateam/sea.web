@@ -66,7 +66,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   data() {
     return {
@@ -158,7 +158,7 @@ export default {
 }
 </script>
 
-<script setup lang="ts"></script>
+<script setup></script>
 
 <style lang="scss">
 $height: 32px;

@@ -1,31 +1,31 @@
 <template>
   <div id="Emoji">
     <div class="one emojis" v-for="(e, i) in emojis" :key="i" @click="bindCopiedEmoji(e)">
-      <div class="emoji">{{e}}</div>
-      <div class="text id">#-{{i}}</div>
+      <div class="emoji">{{ e }}</div>
+      <div class="text id">#-{{ i }}</div>
     </div>
     <hr />
     <h1>Font Awesome</h1>
     <div v-for="(e, i) in icons[0]" :key="`0-${i}`" class="one" @click="bindCopiedIcon(e, 'fab')">
       <i class="fab" :class="`fa-${e}`"></i>
-      <div class="text name">{{e}}</div>
-      <div class="text id">0-{{i}}</div>
+      <div class="text name">{{ e }}</div>
+      <div class="text id">0-{{ i }}</div>
     </div>
     <div v-for="(e, i) in icons[1]" :key="`1-${i}`" class="one" @click="bindCopiedIcon(e, 'fas')">
       <i class="fas" :class="`fa-${e}`"></i>
-      <div class="text name">{{e}}</div>
-      <div class="text id">1-{{i}}</div>
+      <div class="text name">{{ e }}</div>
+      <div class="text id">1-{{ i }}</div>
     </div>
     <div v-for="(e, i) in icons[2]" :key="`2-${i}`" class="one" @click="bindCopiedIcon(e, 'fas')">
       <i class="fas" :class="`fa-${e}`"></i>
-      <div class="text name">{{e}}</div>
-      <div class="text id">2-{{i}}</div>
+      <div class="text name">{{ e }}</div>
+      <div class="text id">2-{{ i }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import icons from './emoji-icons.js'
+import icons from '../emoji-icons.js'
 import emojis from 'emojis-list'
 export default {
   name: 'Emoji',
@@ -51,7 +51,7 @@ export default {
     document.title = 'Emoji'
     this.$store.state.title = 'Emoji 选中表情复制'
   },
-  created() {},
+  created() { },
   mounted() {
     this.$nextTick(() => {
       Sea('#AppHeader>.back').hide()
@@ -64,8 +64,8 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-@import '/cdn/fontawesome/css/all.min.css';
+<style lang="scss">
+@import "/cdn/fontawesome/css/all.min.css";
 
 #Emoji {
   text-align: center;
@@ -109,7 +109,7 @@ export default {
   }
 
   .one:hover {
-    color: #0F60AB;
+    color: #0f60ab;
   }
 }
 

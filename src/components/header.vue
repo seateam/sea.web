@@ -3,7 +3,7 @@
     <span v-if="props.title" class="title">{{ props.title }}</span>
   </div>
 </template>
-<script setup lang="ts">
+<script setup>
 const props = defineProps({
   title: String,
 });

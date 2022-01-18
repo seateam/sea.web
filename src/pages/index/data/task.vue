@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import api from '../../assets/js/api'
-import Sea from '../../assets/js/bigsea'
+import api from '../../../assets/js/api'
+import Sea from '../../../assets/js/bigsea'
 export default {
   components: {},
   props: ['mode'],
@@ -217,7 +217,7 @@ export default {
           // 保存 历史
           this.taskSaveHistory()
         },
-        () => {},
+        () => { },
       )
     },
     render() {

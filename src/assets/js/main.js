@@ -9,6 +9,7 @@ import App from '../../app.vue'
 
 import '../css/main.scss'
 
+console.log('🌊', routes)
 const router = createRouter({ history: createWebHistory(), routes })
 const app = createApp(App)
 

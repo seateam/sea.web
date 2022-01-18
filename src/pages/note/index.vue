@@ -26,10 +26,10 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import api from '../../assets/js/api'
 import Sea from '../../assets/js/bigsea'
-import KindMove from './kindMove.vue'
+import KindMove from './data/kindMove.vueindMove.vue'
 export default {
   name: 'Notes',
   components: { KindMove },
@@ -225,7 +225,7 @@ export default {
   },
 }
 </script>
-<script setup lang="ts"></script>
+<script setup></script>
 
 <style lang="scss">
 #Notes {

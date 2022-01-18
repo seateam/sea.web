@@ -17,13 +17,7 @@
             <el-input v-model="form.icon" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="ＰＣ端" class="url">
-            <el-input
-              v-model="form.pc"
-              autocomplete="off"
-              type="textarea"
-              autosize
-              resize="none"
-            ></el-input>
+            <el-input v-model="form.pc" autocomplete="off" type="textarea" autosize resize="none"></el-input>
           </el-form-item>
           <el-form-item label="移动端" class="url">
             <el-input
@@ -35,22 +29,18 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="ＡＰＰ" class="url">
-            <el-input
-              v-model="form.app"
-              autocomplete="off"
-              type="textarea"
-              autosize
-              resize="none"
-            ></el-input>
+            <el-input v-model="form.app" autocomplete="off" type="textarea" autosize resize="none"></el-input>
           </el-form-item>
           <el-form-item label="颜色" class="color">
             <el-input v-model="form.color" @focus="(e) => e.target.select()" clearable></el-input>
             <input type="color" v-model="form.color" />
           </el-form-item>
           <el-form-item label="标签" class="tags">
-            <el-tag :key="i" v-for="(tag, i) in form.tags" closable @close="bindTagClose(i)">{{
-              tag
-            }}</el-tag>
+            <el-tag :key="i" v-for="(tag, i) in form.tags" closable @close="bindTagClose(i)">
+              {{
+                tag
+              }}
+            </el-tag>
             <el-input
               class="input-new-tag"
               v-if="tagInputShow"
@@ -60,9 +50,7 @@
               @keyup.enter.native="bindTagAdd"
               @blur="bindTagAdd"
             ></el-input>
-            <el-button v-else class="button-new-tag" size="small" @click="tagInputShow = true"
-              >+ 新标签</el-button
-            >
+            <el-button v-else class="button-new-tag" size="small" @click="tagInputShow = true">+ 新标签</el-button>
           </el-form-item>
           <el-form-item label="墙外" class="outwall">
             <el-switch v-model="form.outwall"></el-switch>
@@ -109,8 +97,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import Sea from '../../assets/js/bigsea'
+<script>
+import Sea from '../../../assets/js/bigsea'
 export default {
   name: 'EngineEdit',
   props: ['edit', 'show', 'type'],
@@ -165,8 +153,8 @@ export default {
       this.dialogShow = false
     },
   },
-  created() {},
-  mounted() {},
+  created() { },
+  mounted() { },
   watch: {
     show() {
       this.dialogShow = true
@@ -188,7 +176,7 @@ export default {
   },
 }
 </script>
-<script setup lang="ts"></script>
+<script setup>  </script>
 
 <style lang="scss">
 .EngineEdit-dialog {

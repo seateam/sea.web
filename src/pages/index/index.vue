@@ -120,17 +120,12 @@
   </draggable>
 </template>
 
-<script lang="ts">
+<script>
 import draggable from 'vuedraggable'
 // import contextmenu from '@/pages/index/contextmenu.js'
 import Sea from '../../assets/js/bigsea'
-import Task from '../index/task.vue'
-import EngineStore from '../index/engineStore.vue'
-declare global {
-  interface Window {
-    sogou: any
-  }
-}
+import Task from './data/task.vue'
+import EngineStore from './data/engineStore.vue'
 export default {
   name: 'Index',
   // mixins: [contextmenu],

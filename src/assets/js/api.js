@@ -1,12 +1,5 @@
 import axios from 'axios'
 
-declare module 'axios' {
-  interface AxiosResponse<T = any> {
-    ok: boolean
-    msg: string
-  }
-}
-
 const api = axios.create({
   baseURL: 'https://api.sea.team',
   timeout: 25000,

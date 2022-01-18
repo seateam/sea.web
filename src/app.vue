@@ -6,7 +6,7 @@
   <app-footer />
 </template>
 
-<script setup lang="ts"></script>
+<script setup></script>
 <script>
 import AppHeader from './app-header.vue'
 import AppFooter from './app-footer.vue'

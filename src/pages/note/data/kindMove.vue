@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'KindMove',
   props: ['show', 'kind'],
@@ -46,7 +46,7 @@ export default {
   },
 }
 </script>
-<script setup lang="ts"></script>
+<script setup></script>
 
 <style lang="scss">
 .KindMove-dialog {

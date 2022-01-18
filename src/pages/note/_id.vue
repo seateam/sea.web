@@ -15,8 +15,7 @@
               class="unity"
               type="text"
               @click="dialogUnityEdit = true"
-              >联合投稿</el-button
-            >
+            >联合投稿</el-button>
           </template>
           <template v-else>
             <div>目录</div>
@@ -58,12 +57,7 @@
       </div>
       <div class="editor-box">
         <div class="editor">
-          <textarea
-            ref="editor"
-            v-model="editor"
-            @input="bindInput"
-            @scroll="bindScroll"
-          ></textarea>
+          <textarea ref="editor" v-model="editor" @input="bindInput" @scroll="bindScroll"></textarea>
         </div>
       </div>
     </div>
@@ -108,11 +102,7 @@
       </div>
       <div class="label">添加作者：</div>
       <div class="search">
-        <el-input
-          placeholder="搜索用户：手机号、ID或名字"
-          v-model="searchInput"
-          clearable
-        ></el-input>
+        <el-input placeholder="搜索用户：手机号、ID或名字" v-model="searchInput" clearable></el-input>
         <el-button
           type="primary"
           icon="el-icon-search"
@@ -135,9 +125,9 @@
 </template>
 
 <script>
-import h1 from '@/pages/note/remarkable-h1.js'
-import noteUpload from '@/pages/note/noteUpload.vue'
-import remarkable from '@/pages/note/remarkable.js'
+import h1 from './with/remarkable-h1.js'
+import noteUpload from './with/noteUpload.vue'
+import remarkable from './with/remarkable.js'
 import * as dayjs from 'dayjs'
 import QRCode from 'qrcode'
 export default {
@@ -455,7 +445,7 @@ export default {
     // 关闭提示
     this.closeTip()
   },
-  mounted() {},
+  mounted() { },
   destroyed() {
     document.title = '大海个人助理'
     this.$store.state.title = ''
@@ -490,12 +480,12 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-@import '/cdn/fontawesome/css/all.min.css';
-@import './atom-one-light.css';
+<style lang="scss">
+@import "/cdn/fontawesome/css/all.min.css";
+@import "./atom-one-light.css";
 
 #Note {
-  @import './note.stylus';
+  @import "./note.scss";
 
   user-select: text;
   min-height: 40vh;
@@ -503,8 +493,8 @@ export default {
   line-height: 25px;
   letter-spacing: 0.01rem;
   word-break: break-all;
-  $height = 32px;
-  $marginTop = 20px;
+  $height: 32px;
+  $marginTop: 20px;
   overflow: hidden;
 
   .el-loading-mask {
@@ -625,7 +615,8 @@ export default {
       }
     }
 
-    .render-box, .editor-box {
+    .render-box,
+    .editor-box {
       width: 100%;
       padding: 14px;
     }
@@ -658,7 +649,8 @@ export default {
         height: 100%;
 
         textarea {
-          font-family: Monaco, Menlo, Consolas, 'Courier New', Microsoft Yahei, sans-serif;
+          font-family: Monaco, Menlo, Consolas, "Courier New", Microsoft Yahei,
+            sans-serif;
           font-weight: 300;
           letter-spacing: 0.01rem;
           color: #191919;
@@ -712,7 +704,7 @@ export default {
       background: #fff;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
       border-radius: 2px;
-      background: #FFF url('./toc_bg.png');
+      background: #fff url("./toc_bg.png");
       border: 1px solid rgba(0, 0, 0, 0.2);
       box-shadow: 0 2px 7px rgba(0, 0, 0, 0.2);
       padding: 14px;
@@ -782,94 +774,6 @@ export default {
     border-radius: 2px;
     cursor: pointer;
     cursor: zoom-in;
-  }
-}
-
-@media (min-width: 1024px) {
-  #Note {
-    position: relative;
-    width: 61.8%;
-    margin: 0 auto;
-    font-size: 4.6px;
-    line-height: 8px;
-    $height = 14px;
-    $marginTop = 4px;
-
-    .dialog-unity {
-      width: 61.8%;
-
-      .user {
-        width: 30px;
-        margin-right: 6px;
-        margin-bottom: 6px;
-
-        .el-image {
-          width: 30px;
-          height: 30px;
-        }
-      }
-    }
-
-    .qrcode {
-      display: block;
-      padding: 10px;
-    }
-
-    .edit.isPC {
-      flex-direction: row;
-
-      .render-box, .editor-box {
-        height: 100%;
-        padding: 4px;
-      }
-
-      .editor-box {
-        padding: 0;
-        width: 61.8%;
-
-        .editor {
-          textarea {
-            font-size: 4.6px;
-            padding: 4px;
-            padding-left: 5px;
-            line-height: 7.7px;
-          }
-        }
-      }
-
-      .render-box {
-        width: 38.2%;
-      }
-
-      .btns {
-        align-items: center;
-        top: 0;
-        font-size: 8px;
-        // (61.8 - 38.2) / 2
-        margin-right: 11.8%;
-        flex-direction: column;
-      }
-    }
-
-    .toc.AppHeaderButton {
-      .box {
-        width: 120px;
-        min-height: 20px;
-        padding: 5px;
-        padding-bottom: 0;
-      }
-
-      .btn-show {
-        svg {
-          width: 7px;
-          height: 7px;
-        }
-      }
-    }
-
-    .one {
-      min-height: 20px;
-    }
   }
 }
 </style>

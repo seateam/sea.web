@@ -65,12 +65,12 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import engineMethod from './engineMethod.js'
 import EngineEdit from './engineEdit.vue'
 import Pinyin from 'pinyin'
-import api from '../../assets/js/api'
-import Sea from '../../assets/js/bigsea.js'
+import api from '../../../assets/js/api'
+import Sea from '../../../assets/js/bigsea.js'
 export default {
   mixins: [engineMethod],
   components: { EngineEdit },
@@ -234,7 +234,7 @@ export default {
 }
 </script>
 
-<script setup lang="ts"></script>
+<script setup></script>
 
 <style lang="scss">
 #EngineStore {

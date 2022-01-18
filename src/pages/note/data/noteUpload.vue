@@ -40,10 +40,8 @@
 <script>
 import * as qiniu from 'qiniu-js'
 import * as dayjs from 'dayjs'
-import ElImageViewer from 'element-ui/packages/image/src/image-viewer'
 export default {
   name: 'NoteUpload',
-  components: { ElImageViewer },
   props: ['show'],
   data() {
     return {
@@ -128,7 +126,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 #NoteUpload {
   .el-dialog__body {
     display: flex;
@@ -140,7 +138,7 @@ export default {
     .file {
       width: 61.8vw;
       height: 61.8vw;
-      background: #F7F7F9;
+      background: #f7f7f9;
       position: relative;
 
       .file-image {
@@ -210,7 +208,7 @@ export default {
 
     .url {
       cursor: pointer;
-      color: #67C23A;
+      color: #67c23a;
       padding: 20px 20px 0;
       width: 100%;
     }
