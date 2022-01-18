@@ -67,7 +67,9 @@
         v-for="(e, i) in sugArr"
         @mousedown.prevent="bindSearch(e)"
         :key="i"
-      >{{ e }}</div>
+      >
+        {{ e }}
+      </div>
     </div>
     <draggable
       v-show="!showSug"
@@ -100,10 +102,10 @@
 
 <script>
 import draggable from 'vuedraggable'
-import api from '../../assets/js/api'
+import api from '../../assets/js/api.js'
 import Sea from '../../assets/js/bigsea'
 import Task from './data/task.vue'
-import EngineStore from './data/engineStore.vue'
+import EngineStore from './data/engine-store.vue'
 
 export default {
   name: 'Index',
@@ -297,19 +299,21 @@ export default {
     enginesSave() {
       // if (Sea.Vue.login()) return
       const engine = Sea.deepCopy(this.engines).map((e) => e.id)
-      api.request({
-        method: 'post',
-        url: '/v3/user.engine',
-        data: {
-          engine: engine,
-        },
-      }).then((res) => {
-        if (res.ok) {
-          // this.$message.success(res.msg)
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
+      api
+        .request({
+          method: 'post',
+          url: '/v3/user.engine',
+          data: {
+            engine: engine,
+          },
+        })
+        .then((res) => {
+          if (res.ok) {
+            // this.$message.success(res.msg)
+          } else {
+            this.$message.error(res.msg)
+          }
+        })
     },
     init() {
       this.keyword = this.$store.state.keyword || ''

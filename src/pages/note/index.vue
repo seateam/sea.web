@@ -7,7 +7,9 @@
         v-for="(e, i) in note"
         :key="i"
         @click="$store.state.noteKind = i"
-      >{{ e.name }}</div>
+      >
+        {{ e.name }}
+      </div>
       <div class="kind add" slot="footer" @click="bindKindAdd">+</div>
     </div>
     <div class="notes" v-if="note[noteNow]" :list="note[noteNow].arr">
@@ -18,7 +20,8 @@
         :style="{ color: e.color }"
         @click="bindNote($event, e)"
         :to="`/note/${e.id}`"
-      >{{ e.title }}</router-link>
+        >{{ e.title }}</router-link
+      >
       <div class="note add" slot="footer" @click="bindNoteAdd">+</div>
     </div>
     <!-- 弹窗 移动分类  -->
@@ -27,7 +30,7 @@
 </template>
 
 <script>
-import api from '../../assets/js/api'
+import api from '../../assets/js/api.js'
 import Sea from '../../assets/js/bigsea'
 import KindMove from './data/kindMove.vue'
 export default {

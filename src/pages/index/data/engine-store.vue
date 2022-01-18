@@ -44,8 +44,8 @@
       <div class="engines" :class="{ tags: tagsShow }">
         <template v-for="(engine, i) in enginesFilter" :key="i">
           <div
-            :disabled="engine && engine.outwall && !GreatWallOut"
             class="engine"
+            :class="{ disabled: engine.outwall && !GreatWallOut }"
             @mouseover="bindMouseOver(engine, $event)"
             @mouseout="bindMouseOut(engine, $event)"
             @click="bindEngine(i)"
@@ -66,10 +66,10 @@
 </template>
 
 <script>
-import engineMethod from './engineMethod.js'
-import EngineEdit from './engineEdit.vue'
 import Pinyin from 'pinyin'
-import api from '../../../assets/js/api'
+import engineMethod from './engine-method.js'
+import EngineEdit from './engine-edit.vue'
+import api from '../../../assets/js/api.js'
 import Sea from '../../../assets/js/bigsea.js'
 export default {
   mixins: [engineMethod],
@@ -128,6 +128,7 @@ export default {
           })
         }
       }
+      console.log('🌊', arr)
       return arr
     },
   },

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import api from '../../../assets/js/api'
+import api from '../../../assets/js/api.js'
 import Sea from '../../../assets/js/bigsea'
 export default {
   components: {},
@@ -217,7 +217,7 @@ export default {
           // 保存 历史
           this.taskSaveHistory()
         },
-        () => { },
+        () => {},
       )
     },
     render() {

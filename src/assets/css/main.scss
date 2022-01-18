@@ -56,7 +56,7 @@ input {
 }
 
 /* 禁用样式 */
-[disabled] {
+.disabled {
   pointer-events: none;
   opacity: 0.41;
 }
