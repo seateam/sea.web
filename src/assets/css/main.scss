@@ -1,9 +1,10 @@
 :root {
   --primary: #12507b;
   --background: #eaeef1;
-  --text-primary: #333333;
   // element
-  --el-color-primary: #12507b;
+  // https://element.eleme.cn/#/zh-CN/theme/preview
+  --el-color-primary: #4a92c5;
+  --el-color-white: #eaeef1;
 }
 
 *,
@@ -14,7 +15,7 @@
 }
 
 html {
-  color: var(--text-primary);
+  color: #303133;
   background: var(--background);
   font-size: 16px;
   font-weight: 300;

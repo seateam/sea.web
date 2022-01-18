@@ -69,63 +69,42 @@
         :key="i"
       >{{ e }}</div>
     </div>
-    <!-- <draggable
+    <draggable
       v-show="!showSug"
-      v-bind="$store.state.draggable"
+      v-model="engines"
+      item-key="id"
       class="user-engines"
-      :list="engines"
-      draggable=".drag"
       @update="bindUpdate"
     >
-      <div
-        class="engine drag"
-        :class="{ active: engineNow.id === engine.id }"
-        :style="{ color: engineNow.id === engine.id ? engine.color : '' }"
-        v-for="(engine, i) in engines"
-        :key="engine.id"
-        @click="bindEngine(i)"
-        @contextmenu="bindContextMenuShow($event, i)"
-        @touchstart="bindContextMenuStart($event, i)"
-        @touchmove="bindContextMenuMove"
-        @touchend="bindContextMenuEnd"
-      >
-        <icon-app :name="engine.icon || 'shalou'" />
-        <span>{{ engine.name }}</span>
-      </div>
+      <template #item="{ element, index }">
+        <div
+          class="engine drag"
+          :class="{ active: engineNow.id === element.id }"
+          :style="{ color: engineNow.id === element.id ? element.color : '' }"
+          @click="bindEngine(index)"
+        >
+          <icon-app :name="element.icon || 'shalou'" />
+          <span>{{ element.name }}</span>
+        </div>
+      </template>
       <template #footer>
         <div class="engine add" @click="bindEngineAdd">+</div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
       </template>
-    </draggable>-->
+    </draggable>
     <div class="cloud" v-if="user || userDefault" v-show="!showSug">
       <Task mode="task" />
     </div>
     <EngineStore v-if="user || userDefault" :show="engineStoreShow" @updateEngine="updateEngine" />
   </div>
-  <draggable
-    v-model="myArray"
-    group="people"
-    @start="drag = true"
-    @end="drag = false"
-    item-key="id"
-  >
-    <template #item="{ element }">
-      <div>{{ element.name }}</div>
-    </template>
-  </draggable>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
-// import contextmenu from '@/pages/index/contextmenu.js'
+import api from '../../assets/js/api'
 import Sea from '../../assets/js/bigsea'
 import Task from './data/task.vue'
 import EngineStore from './data/engineStore.vue'
+
 export default {
   name: 'Index',
   // mixins: [contextmenu],
@@ -159,9 +138,6 @@ export default {
   },
   data() {
     return {
-      myArray: [
-        { name: 123 }
-      ],
       inputFocus: false,
       sugArr: [],
       sugNow: null,
@@ -171,13 +147,10 @@ export default {
       // 搜索引擎商店
       engineStoreShow: '',
       engines: this.$store.state.engineArr,
-      drag: false,
     }
   },
   methods: {
     bindUpdate() {
-      // bigsea
-      // this.contextMenuDragEnd()
       this.enginesSave()
     },
     bindEngine(index) {
@@ -324,7 +297,7 @@ export default {
     enginesSave() {
       // if (Sea.Vue.login()) return
       const engine = Sea.deepCopy(this.engines).map((e) => e.id)
-      Sea.Ajax({
+      api.request({
         method: 'post',
         url: '/v3/user.engine',
         data: {
