@@ -1,5 +1,5 @@
 // 任务
-const parseTask = state => {
+const parseTask = (state) => {
   const blockTokens = state.tokens
   for (let i = 0; i < blockTokens.length; i++) {
     const tokens = blockTokens[i]
@@ -7,7 +7,7 @@ const parseTask = state => {
       for (let i2 = 0; i2 < tokens.children.length; i2++) {
         let children
         const token = tokens.children[i2]
-        const level = token.level
+        let level = token.level
         if (token.type === 'text') {
           let text = token.content
           if (text.startsWith('[x] ')) {
@@ -53,7 +53,7 @@ const parseTask = state => {
   }
 }
 
-const task = function(md) {
+const task = function (md) {
   md.core.ruler.push('task', parseTask)
 }
 export default task

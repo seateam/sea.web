@@ -546,100 +546,6 @@ Sea.urlFormat = function (obj) {
   const href = `${origin}${path}`
   return `${href}${query}${hash}`
 }
-// Ajax
-Sea.Ajax = function (request) {
-  // 直接 GET 请求
-  if (typeof request === 'string') {
-    request = { url: request }
-  }
-  const req = {
-    method: (request.method || 'GET').toUpperCase(),
-    url: request.url || '',
-    data: request.data || {},
-    dataType: request.dataType || 'json',
-    query: request.query || {},
-    header: request.header || {},
-    callback: request.callback,
-    hash: request.hash || '',
-    timeout: request.timeout,
-  }
-  // 默认参数
-  if (typeof this.Ajax.default === 'function') {
-    req.data = Object.assign(this.Ajax.default() || {}, req.data)
-  }
-  // host
-  if (!req.url.startsWith('http')) {
-    // 默认域名
-    req.url = (this.Ajax.HOST || '') + req.url
-  }
-  // url 解析
-  const url = this.url(req.url)
-  req.url = url.origin + url.path
-  // query 请求
-  let query = Object.assign(url.query, req.query)
-  if (req.method === 'GET') {
-    query = Object.assign(query, req.data)
-  }
-  const search = this.query(query)
-  if (search) {
-    req.url += '?' + search
-  }
-  // hash 锚点
-  const hash = req.hash || url.hash
-  if (hash) {
-    req.url += '#' + hash
-  }
-  // promise
-  return new Promise((resolve, reject) => {
-    const r = new XMLHttpRequest()
-    // 跨域请求 cookie
-    if (this.Ajax.withCredentials) {
-      r.withCredentials = true
-    }
-    // 设置超时
-    if (req.timeout) {
-      r.timeout = req.timeout
-    }
-    r.open(req.method, req.url, true)
-    // default json
-    if (req.method !== 'GET' && !req.header['Content-Type']) {
-      req.header['Content-Type'] = 'application/json'
-    }
-    for (const key in req.header) {
-      r.setRequestHeader(key, req.header[key])
-    }
-    r.onreadystatechange = () => {
-      if (r.readyState === 4) {
-        const res = this.json(r.response)
-        if (r.status < 200 || r.status >= 300) {
-          if (typeof this.Ajax.fail === 'function') {
-            this.Ajax.fail(r)
-          }
-        }
-        // 回调函数
-        if (typeof req.callback === 'function') {
-          req.callback(res)
-        }
-        // Promise 成功
-        resolve(res)
-      }
-    }
-    r.onerror = (err) => {
-      // Promise 失败
-      reject(err)
-    }
-    if (req.method === 'GET') {
-      r.send()
-    } else {
-      // POST
-      if (typeof req.data === 'string') {
-        r.send(req.data)
-      }
-      // default json
-      r.send(JSON.stringify(req.data))
-    }
-  })
-}
 // 生成样式 String
 Sea.css = function (css, obj) {
   // this.css('top:hover', {'display':'block', 'cursor':'zoom-in'})
@@ -763,10 +669,4 @@ Sea.localStorage = function (key, val) {
 Sea.deepCopy = function (data) {
   return this.json(JSON.stringify(data))
 }
-// 默认 host 域名
-// Sea.Ajax.HOST = 'https://api.sea.team'
-// 默认参数
-// Sea.Ajax.default = () => {}
-// 返回值 统一处理
-// Sea.Ajax.fail = (res) => {}
 export default Sea

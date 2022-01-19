@@ -55,9 +55,7 @@
           </div>
         </template>
         <div class="engine add" v-if="user.id === 0" @click="bindEngineAdd">+</div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
-        <div class="engine empty"></div>
+        <div class="engine empty" v-for="(e, i) in new Array(24)" :key="i"></div>
       </div>
     </main>
     <!-- 弹窗 编辑书签 -->
@@ -70,7 +68,7 @@ import Pinyin from 'pinyin'
 import engineMethod from './engine-method.js'
 import EngineEdit from './engine-edit.vue'
 import api from '../../../assets/js/api.js'
-import Sea from '../../../assets/js/bigsea.js'
+import Sea from '../../../assets/js/bigsea'
 export default {
   mixins: [engineMethod],
   components: { EngineEdit },
@@ -128,7 +126,6 @@ export default {
           })
         }
       }
-      console.log('🌊', arr)
       return arr
     },
   },

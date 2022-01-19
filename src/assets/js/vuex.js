@@ -90,6 +90,8 @@ const vuex = createStore({
       songPlaying: false,
       // 微信绑定
       weixinUser: null,
+      // markdown TOC
+      mdToc: [],
     }
   },
   // 获取

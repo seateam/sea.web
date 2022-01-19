@@ -10,7 +10,9 @@
       >
         {{ e.name }}
       </div>
-      <div class="kind add" slot="footer" @click="bindKindAdd">+</div>
+      <slot name="footer">
+        <div class="kind add" @click="bindKindAdd">+</div>
+      </slot>
     </div>
     <div class="notes" v-if="note[noteNow]" :list="note[noteNow].arr">
       <router-link
@@ -22,7 +24,9 @@
         :to="`/note/${e.id}`"
         >{{ e.title }}</router-link
       >
-      <div class="note add" slot="footer" @click="bindNoteAdd">+</div>
+      <slot name="footer">
+        <div class="note add" @click="bindNoteAdd">+</div>
+      </slot>
     </div>
     <!-- 弹窗 移动分类  -->
     <KindMove :show="moveShow" :kind="note" @save="bindNoteMoveCallback" />
@@ -32,10 +36,12 @@
 <script>
 import api from '../../assets/js/api.js'
 import Sea from '../../assets/js/bigsea'
-import KindMove from './data/kindMove.vue'
+import KindMove from './data/kind-move.vue'
 export default {
   name: 'Notes',
-  components: { KindMove },
+  components: {
+    KindMove,
+   },
   data() {
     return {
       note: [],

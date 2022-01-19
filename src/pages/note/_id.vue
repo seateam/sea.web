@@ -1,6 +1,6 @@
 <template>
-  <div id="Note" v-loading="htmlLoading" :class="{ editing: editing }">
-    <div class="AppHeaderButton toc">
+  <div class="Note" v-loading="htmlLoading" :class="{ editing: editing }">
+    <div class="app-header-button toc">
       <div class="mask" v-if="tocShow" @click="tocShow = false"></div>
       <div class="btn-show" @click="tocShow = !tocShow">
         <i class="fa fa-list-ul"></i>
@@ -30,7 +30,9 @@
     <div class="qrcode">
       <el-popover title="手机扫码" width="120" trigger="click">
         <img :src="noteQRCode" alt="二维码" />
-        <icon slot="reference" name="qrcode" />
+        <slot name="reference">
+          <icon name="qrcode" />
+        </slot>
       </el-popover>
     </div>
     <!-- 编辑 -->
@@ -45,7 +47,7 @@
         <div class="close" @click="bindClose">
           <i class="fas fa-check-circle"></i>
         </div>
-        <div class="image" @click="dialogUploadShow = Date.now()">
+        <div class="image" @click="dialogUploadShow = true">
           <i class="fas fa-mountain"></i>
         </div>
         <div class="question" @click="bindQuestion">
@@ -77,10 +79,12 @@
     <!-- 保存弹窗 -->
     <el-dialog title="确认发布" v-model="dialogPublishShow" custom-class="dialog-publish">
       <el-switch v-model="isPublic" inactive-text="公开"></el-switch>
-      <div slot="footer" class="dialog-footer" v-loading="saveLoading">
-        <el-button @click="dialogPublishShow = false">取 消</el-button>
-        <el-button type="primary" @click="noteSave">确 定</el-button>
-      </div>
+      <slot name="footer">
+        <div class="dialog-footer" v-loading="saveLoading">
+          <el-button @click="dialogPublishShow = false">取 消</el-button>
+          <el-button type="primary" @click="noteSave">确 定</el-button>
+        </div>
+      </slot>
     </el-dialog>
     <!-- 联合投稿 -->
     <el-dialog
@@ -119,23 +123,18 @@
         <el-button @click.native="bindAddAuthor">添加作者</el-button>
       </div>
     </el-dialog>
-    <!-- 上传弹窗 -->
-    <noteUpload :show="dialogUploadShow" />
   </div>
 </template>
 
 <script>
-import h1 from './with/remarkable-h1.js'
-import noteUpload from './with/noteUpload.vue'
-import remarkable from './with/remarkable.js'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import QRCode from 'qrcode'
+import Sea from '../../assets/js/bigsea'
+import api from '../../assets/js/api'
+import h1 from './data/remarkable-h1.js'
+import remarkable from './data/remarkable.js'
 export default {
-  name: 'Note',
   mixins: [remarkable],
-  components: {
-    noteUpload,
-  },
   computed: {
     isPC() {
       return this.$store.state.isPC
@@ -184,11 +183,13 @@ export default {
       searchUser: null,
       // 作者
       author: [],
+      // 锚点
+      hash: ''
     }
   },
   methods: {
     async bindAddAuthor() {
-      const res = await Sea.Ajax({
+      const res = await api.request({
         method: 'post',
         url: '/v3/note.author.add',
         data: {
@@ -204,7 +205,7 @@ export default {
       }
     },
     async bindSearch() {
-      const res = await Sea.Ajax({
+      const res = await api.request({
         method: 'post',
         url: '/v3/user.find',
         data: {
@@ -225,7 +226,7 @@ export default {
       // 是否公开
       this.note.is_public = this.isPublic
       this.saveLoading = true
-      const res = await Sea.Ajax({
+      const res = await api.request({
         method: 'POST',
         url: '/v3/note.update',
         data: {
@@ -344,7 +345,7 @@ export default {
       arr = arr.concat(md.split('\n'))
       // # 号开头
       arr = arr.filter((e) => /^#+? /.test(e))
-      Sea.mdToc = arr
+      this.$store.state.mdToc = arr
       arr = arr.map((e, i) => {
         e = h1.format(e)
 
@@ -360,8 +361,8 @@ export default {
       return md
     },
     async initData() {
-      const { noteID } = this.$route.params
-      const res = await Sea.Ajax({
+      const { id: noteID } = this.$route.params
+      const res = await api.request({
         method: 'post',
         url: '/v3/note.get',
         data: {
@@ -384,7 +385,7 @@ export default {
       this.user = user
       // 作者
       if (note.author) {
-        Sea.Ajax({
+        api.request({
           method: 'post',
           url: '/v3/user.find',
           data: {
@@ -407,7 +408,7 @@ export default {
       this.html = note.arr.map((e) => this.initHtml(e))
       // 锚点
       this.$nextTick(() => {
-        window.location.hash = Sea.hash
+        window.location.hash = this.hash
       })
     },
     async initQRCode() {
@@ -433,10 +434,8 @@ export default {
   },
   beforeCreate() {
     // hash
-    Sea.hash = String(window.location.hash) || ''
+    this.hash = String(window.location.hash) || ''
     window.location.hash = ''
-    // 字体
-    Sea.Vue.initFontAwesomeJs()
   },
   created() {
     this.initData()
@@ -445,7 +444,6 @@ export default {
     // 关闭提示
     this.closeTip()
   },
-  mounted() { },
   destroyed() {
     document.title = '大海个人助理'
     this.$store.state.title = ''
@@ -481,12 +479,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import "/cdn/fontawesome/css/all.min.css";
-@import "./atom-one-light.css";
+@import "../../assets/css/fontawesome/css/all.min.css";
+@import "./data/atom-one-light.css";
 
-#Note {
-  @import "./note.scss";
-
+.Note {
+  @import "./data/note.scss";
   user-select: text;
   min-height: 40vh;
   font-size: 16px;
@@ -496,6 +493,7 @@ export default {
   $height: 32px;
   $marginTop: 20px;
   overflow: hidden;
+  width: 61.8%;
 
   .el-loading-mask {
     background-color: transparent;
@@ -668,7 +666,7 @@ export default {
     }
   }
 
-  .toc.AppHeaderButton {
+  .toc.app-header-button {
     .mask {
       position: fixed;
       top: 0;
@@ -768,7 +766,7 @@ export default {
   }
 }
 
-#Note.editing {
+.Note.editing {
   .one:hover {
     background: rgba(170, 170, 170, 0.22);
     border-radius: 2px;

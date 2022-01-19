@@ -1,8 +1,8 @@
 // markdown
 import { Remarkable } from 'remarkable'
 import { linkify } from 'remarkable/linkify'
-import task from './remarkable-task.js.js'
-import h1 from './remarkable-h1.js.js'
+import task from './remarkable-task.js'
+import h1 from './remarkable-h1.js'
 import hljs from 'highlight.js'
 export default {
   data() {

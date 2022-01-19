@@ -47,7 +47,6 @@ export default {
     },
   },
   beforeCreate() {
-    Sea.Vue.initFontAwesomeJs()
     document.title = 'Emoji'
     this.$store.state.title = 'Emoji 选中表情复制'
   },

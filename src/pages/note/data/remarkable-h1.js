@@ -1,11 +1,12 @@
+import $store from '../../../assets/js/vuex'
 // 任务
-const parseH1 = state => {
+const parseH1 = (state) => {
   const blockTokens = state.tokens
   for (let i = 0; i < blockTokens.length; i++) {
     const tokens = blockTokens[i]
     if (tokens.type === 'heading_close') {
       const tokens2 = blockTokens[i - 1]
-      const hash = Sea.mdToc.findIndex(e => {
+      const hash = $store.state.mdToc.findIndex((e) => {
         return e.includes(tokens2.content)
       })
       tokens2.children.unshift(
@@ -24,10 +25,10 @@ const parseH1 = state => {
   }
 }
 
-const h1 = function(md) {
+const h1 = function (md) {
   md.core.ruler.push('h1', parseH1)
 }
-h1.format = function(e) {
+h1.format = function (e) {
   // 四空格的代码块
   if (e.startsWith('    ')) {
     return ''

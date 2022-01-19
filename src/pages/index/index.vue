@@ -91,6 +91,7 @@
       </template>
       <template #footer>
         <div class="engine add" @click="bindEngineAdd">+</div>
+        <div class="engine empty" v-for="(e, i) in new Array(24)" :key="i"></div>
       </template>
     </draggable>
     <div class="cloud" v-if="user || userDefault" v-show="!showSug">
