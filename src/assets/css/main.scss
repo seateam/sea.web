@@ -1,7 +1,10 @@
 :root {
   // 中国传统色
+  // 碧城
   --primary: #12507b;
+  // 浅云
   --background: #eaeef1;
+  // 水华朱
   --danger: #a72126;
 }
 
@@ -22,10 +25,10 @@ html {
 }
 
 html,
-button,
 input,
-optgroup,
+button,
 select,
+optgroup,
 textarea {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
