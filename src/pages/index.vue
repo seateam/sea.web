@@ -1,8 +1,9 @@
 <template>
   <h1>大海个人助理</h1>
-
-  <router-link to="/note">笔记</router-link>
-
+  <div class="route">
+    <router-link to="/note">笔记</router-link>
+    <router-link to="/mark">书签</router-link>
+  </div>
   <el-button type="primary" @click="bindUserDefault">默认用户</el-button>
   <el-button @click="bindEngineList">搜索引擎商店</el-button>
   <el-input v-model="account"></el-input>
@@ -71,6 +72,11 @@ export default {
     background-clip: text;
     color: transparent;
     font-weight: 300;
+  }
+  .route {
+    a + a {
+      margin-left: 20px;
+    }
   }
 }
 </style>
