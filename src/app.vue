@@ -1,21 +1,12 @@
 <template>
   <main class="sea-page">
-    <app-header />
     <router-view />
   </main>
-  <app-footer />
 </template>
 
 <script setup></script>
 <script>
-import AppHeader from './app-header.vue'
-import AppFooter from './app-footer.vue'
-export default {
-  components: {
-    AppHeader,
-    AppFooter,
-  },
-}
+
 </script>
 
 <style lang="scss">
