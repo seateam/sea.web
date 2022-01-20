@@ -7,9 +7,10 @@
     "start": "vite --open",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "pnpm": "pnpm install"
+    "pnpm": "pnpm i"
   },
   "devDependencies": {
+    "@types/node": "^17.0.10",
     "@vitejs/plugin-vue": "^2.0.1",
     "pinia": "^2.0.9",
     "sass": "^1.47.0",

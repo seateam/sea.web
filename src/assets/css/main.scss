@@ -1,10 +1,6 @@
 :root {
   --primary: #12507b;
   --background: #eaeef1;
-  // element
-  // https://element.eleme.cn/#/zh-CN/theme/preview
-  --el-color-primary: red;
-  --el-color-white: #eaeef1;
 }
 
 *,
@@ -35,13 +31,12 @@ textarea {
 
 a {
   cursor: pointer;
-  color: var(--primary);
+  // color: var(--primary);
   text-decoration: none;
   word-break: break-word;
-  border-bottom: 1px solid transparent;
 }
 a:hover {
-  border-bottom: 1px solid #0f60ab;
+  text-decoration: underline;
 }
 
 img {
