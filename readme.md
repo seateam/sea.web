@@ -14,11 +14,17 @@
 
 腾讯镜像
 
-`pnpm config set registry https://mirrors.tencent.com/npm/`
+```bash
+pnpm config set registry https://mirrors.tencent.com/npm
+```
 
 默认
 
-`pnpm config set registry hhttps://registry.npmjs.org`
+```bash
+pnpm config set registry hhttps://registry.npmjs.org
+```
+
+安装
 
 ```bash
 pnpm i
