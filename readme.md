@@ -18,8 +18,11 @@ Visual Studio Code
 
 ## 安装依赖包
 
+pnpm config set registry https://mirrors.tencent.com/npm/
+pnpm config get registry
+
 ```bash
-yarn install
+pnpm i
 ```
 
 ## 开发
