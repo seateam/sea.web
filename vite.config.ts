@@ -18,7 +18,7 @@ export default defineConfig({
       exclude: ['**/data/*.vue'],
     }),
     AutoImport({
-      imports: ['vue', 'vue-router'],
+      imports: ['vue', 'vue-router', 'vuex'],
       dts: 'src/auto-imports.d.ts',
     }),
   ],
