@@ -33,19 +33,18 @@ api.interceptors.response.use(
     // 对响应数据做点什么
     const res = response.data
     if (!res.ok) {
-      ElMessage.error(res.msg || 'request error')
+      const msg = res.msg || 'request error'
+      ElMessage.error(msg)
+      return Promise.reject(new Error(msg))
+    } else {
+      return res
     }
-    return res
   },
-  function (err) {
+  function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
     ElMessage.error('请求失败')
-    return {
-      ok: false,
-      data: err,
-      msg: 'request error',
-    }
+    return Promise.reject(error)
   },
 )
 
