@@ -18,30 +18,30 @@
                 <div class="yezi" @click="bindBook">
                 <icon name="yezi" />
                 </div>
-                <div class="more" @click="boxShow = !boxShow">
-                <icon name="more" />
-                <div class="mask" v-if="boxShow" @mousedown.prevent="bindMask"></div>
-                <div class="box" v-if="boxShow">
-                    <div class="border-up-empty">
-                    <span></span>
-                    </div>
-                    <div class="app music" :class="{ playing: playing }" @click="bindMusic">
-                    <icon name="music" />
-                    <span>音乐</span>
-                    </div>
-                    <div class="app cloud-history" @click="bindTask">
-                    <icon name="history" />
-                    <span>已完成</span>
-                    </div>
-                    <div class="app question" @click="bindHelp">
-                    <icon name="question" />
-                    <span>帮助</span>
-                    </div>
-                    <div class="app communism" @click="bindCommunism">
-                    <icon name="comintern" />
-                    <span>共产国际</span>
-                    </div>
-                </div>
+                <div class="more" @click="bindMore">
+                  <icon name="more" />
+                  <div class="mask" v-if="boxShow" @mousedown.prevent="bindMask"></div>
+                  <div class="box" v-if="boxShow">
+                      <div class="border-up-empty">
+                      <span></span>
+                      </div>
+                      <div class="app music" :class="{ playing: playing }" @click="bindMusic">
+                      <icon name="music" />
+                      <span>音乐</span>
+                      </div>
+                      <div class="app cloud-history" @click="bindTask">
+                      <icon name="history" />
+                      <span>已完成</span>
+                      </div>
+                      <div class="app question" @click="bindHelp">
+                      <icon name="question" />
+                      <span>帮助</span>
+                      </div>
+                      <div class="app communism" @click="bindCommunism">
+                      <icon name="comintern" />
+                      <span>共产国际</span>
+                      </div>
+                  </div>
                 </div>
                 <div @click="bindLogin" class="head">
                 <el-image :src="userAvatar">
@@ -66,7 +66,8 @@
         </template>
     </div>
 </template>
-<!-- <script setup lang="ts">
+<script setup lang="ts">
+    import icon from '../components/icon.vue'
     import { useStore } from 'vuex'
     import { useRouter, useRoute } from 'vue-router'
     const store = useStore()
@@ -78,7 +79,6 @@
     let tabs = store.state.tabs
 
     const bindTab = (i: any) =>  {
-        console.log(i, '==========')
         if (tabNow !== i) {
         let path = tabs[i].path
         if (route.path !== path) {
@@ -148,14 +148,18 @@
     const bindLogin = () => {
         router.push('/mine')
     }
+    const bindMore = () =>{
+      console.log(boxShow)
+      boxShow = !boxShow
+    }
     const bindMask = () => {
         boxShow = false
     }
     const bindBack = () => {
         router.back()
     }
-</script> -->
-<script lang="ts">
+</script>
+<!-- <script lang="ts">
 import {toRefs, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 export default defineComponent({
@@ -221,7 +225,7 @@ export default defineComponent({
     };
     },
 });
-</script>
+</script> -->
 <style lang="scss">
 $height: 32px;
 $marginTop: 20px;
