@@ -1,163 +1,162 @@
 <template>
-    <div id="header">
-        <!-- v-show="tabType === 'Tab'" -->
-        <div class="main">
-            <div class="tabs">
-                <div
-                class="tab"
-                v-for="(tab, i) in tabs"
-                :key="i"
-                @click="bindTab(i)"
-                :class="{ active: String(i) === String(tabNow) }"
-                >
-                <span>{{ tab.name }}</span>
-                </div>
+  <div id="header">
+    <!-- v-show="tabType === 'Tab'" -->
+    <div class="main">
+      <div class="tabs">
+        <div
+          class="tab"
+          v-for="(tab, i) in data.tabs"
+          :key="i"
+          @click="bindTab(i)"
+          :class="{ active: String(i) === String(data.tabNow) }"
+        >
+          <span>{{ tab.name }}</span>
+        </div>
+      </div>
+      <div class="user">
+        <el-image v-if="playing" :src="song.cover" class="cover" alt="唱片" @click="bindPause" />
+        <div class="yezi" @click="bindBook">
+          <icon name="yezi" />
+        </div>
+        <div class="more" @click="data.boxShow = !data.boxShow">
+          <icon name="more" />
+          <div class="mask" v-if="data.boxShow" @mousedown.prevent="bindMask"></div>
+          <div class="box" v-if="data.boxShow">
+            <div class="border-up-empty">
+              <span></span>
             </div>
-            <div class="user">
-                <el-image v-if="playing" :src="song.cover" class="cover" alt="唱片" @click="bindPause" />
-                <div class="yezi" @click="bindBook">
-                <icon name="yezi" />
-                </div>
-                <div class="more" @click="bindMore">
-                  <icon name="more" />
-                  <div class="mask" v-if="boxShow" @mousedown.prevent="bindMask"></div>
-                  <div class="box" v-if="boxShow">
-                      <div class="border-up-empty">
-                      <span></span>
-                      </div>
-                      <div class="app music" :class="{ playing: playing }" @click="bindMusic">
-                      <icon name="music" />
-                      <span>音乐</span>
-                      </div>
-                      <div class="app cloud-history" @click="bindTask">
-                      <icon name="history" />
-                      <span>已完成</span>
-                      </div>
-                      <div class="app question" @click="bindHelp">
-                      <icon name="question" />
-                      <span>帮助</span>
-                      </div>
-                      <div class="app communism" @click="bindCommunism">
-                      <icon name="comintern" />
-                      <span>共产国际</span>
-                      </div>
-                  </div>
-                </div>
-                <div @click="bindLogin" class="head">
-                <el-image :src="userAvatar">
-                    <div slot="error">
-                    <i class="el-icon-picture-outline"></i>
-                    </div>
-                </el-image>
-                <div class="icon" v-show="!user">
-                    <i class="el-icon el-icon-user"></i>
-                </div>
-                </div>
+            <div class="app music" :class="{ playing: playing }" @click="bindMusic">
+              <icon name="music" />
+              <span>音乐</span>
             </div>
+            <div class="app cloud-history" @click="bindTask">
+              <icon name="history" />
+              <span>已完成</span>
+            </div>
+            <div class="app question" @click="bindHelp">
+              <icon name="question" />
+              <span>帮助</span>
+            </div>
+            <div class="app communism" @click="bindCommunism">
+              <icon name="comintern" />
+              <span>共产国际</span>
+            </div>
+          </div>
         </div>
-        <template v-if="tabType === 'Back'">
-        <div class="back" @click="bindBack">
-            <icon name="back" />
+        <div @click="bindLogin" class="head">
+          <el-image :src="userAvatar">
+            <div slot="error">
+              <i class="el-icon-picture-outline"></i>
+            </div>
+          </el-image>
+          <div class="icon" v-show="!user">
+            <i class="el-icon el-icon-user"></i>
+          </div>
         </div>
-        <a name="0" />
-        <div class="placeholder">
-            <span>{{ title }}</span>
-        </div>
-        </template>
+      </div>
     </div>
+    <template v-if="data.tabType === 'Back'">
+      <div class="back" @click="bindBack">
+        <icon name="back" />
+      </div>
+      <a name="0" />
+      <div class="placeholder">
+        <span>{{ title }}</span>
+      </div>
+    </template>
+  </div>
 </template>
 <script setup lang="ts">
-    import icon from '../components/icon.vue'
-    import { useStore } from 'vuex'
-    import { useRouter, useRoute } from 'vue-router'
-    const store = useStore()
-    const router = useRouter()
-    const route = useRoute()
-    let tabType = ''
-    let tabNow = 0
-    let boxShow = false
-    let tabs = store.state.tabs
+import icon from '../components/icon.vue'
+import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
+const store = useStore()
+const router = useRouter()
+const route = useRoute()
 
-    const bindTab = (i: any) =>  {
-        if (tabNow !== i) {
-        let path = tabs[i].path
-        if (route.path !== path) {
-          tabNow = i
-         router.replace(path)
+const data = reactive({
+  tabType: '',
+  tabNow: 0,
+  boxShow: false,
+  tabs: store.state.tabs,
+})
+
+const bindTab = (i: any) => {
+  if (data.tabNow !== i) {
+    let path = data.tabs[i].path
+    if (route.path !== path) {
+      data.tabNow = i
+      router.replace(path)
+    }
+  }
+}
+watch(
+  () => route,
+  (route) => {
+    let type = 'Back'
+    for (let i = 0; i < data.tabs.length; i++) {
+      const e = data.tabs[i]
+      if (e.path === route.path) {
+        type = 'Tab'
+        if (i > -1) {
+          data.tabNow = i
         }
+        break
       }
     }
-    watch(
-        () => route,
-        (route) => {
-            let type = 'Back'
-            for (let i = 0; i < tabs.length; i++) {
-                const e = tabs[i]
-                if (e.path === route.path) {
-                type = 'Tab'
-                if (i > -1) {
-                    tabNow = i
-                }
-                break
-                }
-            }
-            if (tabType !== type) {
-                tabType = type
-                if (typeof [`init${type}`] === 'function') {
-                    // [`init${type}`]()
-                }
-            }
-        }
-    );
-    const title = computed(() =>  {
-      return store.state.title
-    })
-    const userAvatar = computed(() =>  {
-      return store.getters.getUserAvatar
-    })
-    const user = computed(() =>{
-      return store.getters.getUser
-    })
-    // 歌曲状态
-    const song = computed(() =>{
-      return store.state.song
-    })
-    const playing = computed(()=> {
-      return store.state.songPlaying
-    })
-    
-    // 暂停
-    const bindPause = () => {
-        bindMusic()
+    if (data.tabType !== type) {
+      data.tabType = type
+      if (typeof [`init${type}`] === 'function') {
+        // [`init${type}`]()
+      }
     }
-    const bindBook = () => {
-        router.push('/book')
-    }
-    const bindMusic = () => {
-       router.push('/music')
-    }
-    const bindTask = () => {
-        router.push('/task')
-    }
-    const bindHelp = () => {
-        router.push('/note/0')
-    }
-    const bindCommunism = () => {
-        router.push('/note/1')
-    }
-    const bindLogin = () => {
-        router.push('/mine')
-    }
-    const bindMore = () =>{
-      console.log(boxShow)
-      boxShow = !boxShow
-    }
-    const bindMask = () => {
-        boxShow = false
-    }
-    const bindBack = () => {
-        router.back()
-    }
+  },
+)
+const title = computed(() => {
+  return store.state.title
+})
+const userAvatar = computed(() => {
+  return store.getters.getUserAvatar
+})
+const user = computed(() => {
+  return store.getters.getUser
+})
+// 歌曲状态
+const song = computed(() => {
+  return store.state.song
+})
+const playing = computed(() => {
+  return store.state.songPlaying
+})
+
+// 暂停
+const bindPause = () => {
+  bindMusic()
+}
+const bindBook = () => {
+  router.push('/book')
+}
+const bindMusic = () => {
+  router.push('/music')
+}
+const bindTask = () => {
+  router.push('/task')
+}
+const bindHelp = () => {
+  router.push('/note/0')
+}
+const bindCommunism = () => {
+  router.push('/note/1')
+}
+const bindLogin = () => {
+  router.push('/mine')
+}
+const bindMask = () => {
+  data.boxShow = false
+}
+const bindBack = () => {
+  router.back()
+}
 </script>
 <!-- <script lang="ts">
 import {toRefs, onMounted, computed } from 'vue'
