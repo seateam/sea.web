@@ -4,17 +4,13 @@
   </main>
 </template>
 
-<script setup lang="ts"></script>
-<script lang="ts">
-export default {
-  computed: {
-    pageClass() {
-      const path = this.$route.path as string
-      const name = path.slice(1).replace(/\//g, '-') || 'index'
-      return `page-${name}`
-    },
-  },
-}
+<script setup lang="ts">
+const route = useRoute()
+const pageClass = computed(() => {
+  const path = route.path as string
+  const name = path.slice(1).replace(/\//g, '-') || 'index'
+  return `page-${name}`
+})
 </script>
 
 <style lang="scss">
