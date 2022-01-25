@@ -10,12 +10,23 @@ interface MarkList {
   arr: Mark[]
   name: string
 }
+interface Note {
+  id: 49
+  title: string
+}
+interface NoteList {
+  arr: Note[]
+  name: string
+}
 
 const user = reactive({
+  // token
   token: window.localStorage.getItem('token'),
-  default: false,
+  // 是否默认用户
+  default: true,
   // 昵称
   name: '',
+  // id
   id: 0,
   // 座右铭
   motto: false,
@@ -29,6 +40,13 @@ const user = reactive({
   markList: [] as MarkList[],
   // 搜索引擎
   engineList: [] as Engine[],
+  // 笔记
+  noteList: [] as NoteList[],
+  // 微信
+  wx: {
+    name: '',
+    openid: '',
+  },
 })
 const initUser = (data: any) => {
   user.name = data.name
@@ -39,16 +57,11 @@ const initUser = (data: any) => {
   user.avatar = data.avatar
   user.engineList = data.engine
   user.markList = data.book
+  user.noteList = data.note
+  user.wx.name = data.wx_name
+  user.wx.openid = data.wx_openid
 }
-
-if (!user.token) {
-  api.post('/v3/userDefault.get').then((res) => {
-    const data = res.data
-    user.default = true
-    initUser(data)
-  })
-}
-
+// 登录
 const login = async (account: string, password: string) => {
   let res
   res = await api.post('/v3/user.login', {
@@ -62,6 +75,28 @@ const login = async (account: string, password: string) => {
   })
   initUser(res.data)
 }
+// 初始化
+const init = () => {
+  if (user.token) {
+    api
+      .post('/v3/user.get')
+      .then((res) => {
+        user.default = false
+        initUser(res.data)
+      })
+      .catch(() => {
+        window.localStorage.removeItem('token')
+        user.token = ''
+        init()
+      })
+  } else {
+    api.post('/v3/userDefault.get').then((res) => {
+      initUser(res.data)
+    })
+  }
+}
+init()
+
 export default {
   ...toRefs(user),
   login,

@@ -1,19 +1,23 @@
 <template>
   <h1>大海个人助理</h1>
-  <div class="route">
-    <router-link to="/note">笔记</router-link>
-    <router-link to="/mark">书签</router-link>
-  </div>
   <el-button @click="bindEngineList">搜索引擎商店</el-button>
   <el-input v-model="data.account"></el-input>
   <el-input v-model="data.password" type="password"></el-input>
   <el-button type="success" @click="bindLogin">登录</el-button>
   <el-input v-model="user.token.value" disabled></el-input>
+  <div>头像</div>
+  <el-avatar :src="user.avatar.value"></el-avatar>
+  <div>搜索引擎</div>
+  <div class="engine" v-for="(e, i) in engine.list.value" :key="i">
+    {{ e.name }}
+    <icon-app :name="e.icon"></icon-app>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import user from '../../assets/store/user'
 import engine from '../../assets/store/engine'
+import IconApp from '../../components/icon-app.vue'
 
 const data = reactive({
   account: '',
@@ -37,11 +41,6 @@ const bindEngineList = async () => {
     background-clip: text;
     color: transparent;
     font-weight: 300;
-  }
-  .route {
-    a + a {
-      margin-left: 20px;
-    }
   }
 }
 </style>

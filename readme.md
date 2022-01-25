@@ -21,7 +21,7 @@ pnpm config set registry https://mirrors.tencent.com/npm
 默认
 
 ```bash
-pnpm config set registry hhttps://registry.npmjs.org
+pnpm config set registry https://registry.npmjs.org/
 ```
 
 安装
