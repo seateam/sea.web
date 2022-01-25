@@ -10,6 +10,8 @@
 
 [Volar Extension](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
 
+Mac os
+
 ## 安装依赖包
 
 腾讯镜像
