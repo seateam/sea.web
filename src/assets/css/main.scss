@@ -81,3 +81,16 @@ input {
   pointer-events: none;
   opacity: 0.41;
 }
+// 图标
+.iconfont {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+.iconfont.app {
+  pointer-events: none;
+  width: 3em;
+}

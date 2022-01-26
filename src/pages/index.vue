@@ -1,45 +1,33 @@
 <template>
   <div id="index">
     <Header></Header>
-    <!-- <h1>大海个人助理</h1> -->
-    <!-- <div class="route">
-      <router-link to="/note">笔记</router-link>
-      <router-link to="/mark">书签</router-link>
-    </div>
-    <el-button type="primary" @click="bindUserDefault">默认用户：{{ name }}</el-button>
-    <el-button @click="bindEngineList">搜索引擎商店</el-button>
-    <el-input v-model="account"></el-input>
-    <el-input v-model="password" type="password"></el-input>
-    <el-button type="success" @click="bindLogin">登录</el-button>
-    <el-input v-model="token"></el-input>
-    <el-button type="warning" @click="bindUser">用户</el-button> -->
     <div class="logo">
       <div
         class="btn left"
         @click="bindPrev"
-        :style="{ visibility: engineIndex <= 0 ? 'hidden' : 'visible' }"
+        :style="{ visibility: user.engineIndex.value <= 0 ? 'hidden' : 'visible' }"
       >
         <icon name="back" />
       </div>
-      <!-- <div
+      <div
         @click="bindLogo"
         class="center"
-        :class="{ outwall: engineNow.outwall && !GreatWallOut }"
+        :class="{ outwall: data.engineNow.outwall && !user.GreatWallOut.value }"
       >
-        <icon-app :name="engineNow.icon || 'shalou'" />
-        <span>{{ engineNow.name }}</span>
-      </div> -->
-      <!-- <div
+        <icon-app :name="data.engineNow.icon || 'shalou'" />
+        <span>{{ data.engineNow.name }}</span>
+      </div>
+      <div
         class="btn right"
         @click="bindNext"
-        :style="{ visibility: engineIndex >= engineArr.length - 1 ? 'hidden' : 'visible' }"
+        :style="{ visibility: user.engineIndex.value >= user.engineList.value.length - 1 ? 'hidden' : 'visible' }"
       >
         <icon name="next" />
-      </div> -->
+      </div>
     </div>
     <div class="search">
       <div ref="sug"></div>
-      <!-- <input
+      <input
         ref="search"
         type="text"
         v-model="data.keyword"
@@ -49,118 +37,86 @@
         @focus="bindFocus"
         @blur="bindBlur"
         :class="{ active: data.inputFocus && data.sugArr.length }"
-        :placeholder="engineNow.placeholder || ''"
         autofocus
-      /> -->
-      <!-- <div class="clear" v-show="data.keyword || showSug" @mousedown.prevent="bindClear">
+      />
+      <!-- :placeholder="data.engineNow.placeholder || ''" -->
+      <div class="clear" v-show="data.keyword || showSug" @mousedown.prevent="bindClear">
         <icon name="close" />
       </div>
       <div class="btn" @click="bindSearch(null)">
         <icon name="search" />
-      </div> -->
+      </div>
     </div>
+    <div class="sug" v-show="showSug" @mouseout="data.sugNow = -1">
+      <div
+        @mouseover="data.sugNow = i"
+        class="one"
+        :class="{ active: data.sugNow === i }"
+        v-for="(e, i) in data.sugArr"
+        @mousedown.prevent="bindSearch(e)"
+        :key="i"
+      >
+        {{ e }}
+      </div>
+    </div>
+    <draggable
+      v-show="!showSug"
+      v-model="user.engineList.value"
+      item-key="id"
+      class="user-engines"
+      @update="bindUpdate"
+    >
+      <template #item="{ element, index }">
+        <div
+          class="engine drag"
+          :class="{ active: data.engineNow.id === element.id }"
+          :style="{ color: data.engineNow.id === element.id ? element.color : '' }"
+          @click="bindEngine(index)"
+        >
+          <icon-app :name="element.icon || 'shalou'" />
+          <span>{{ element.name }}</span>
+        </div>
+      </template>
+      <template #footer>
+        <div class="engine add" @click="bindEngineAdd">+</div>
+        <div class="engine empty" v-for="(e, i) in new Array(24)" :key="i"></div>
+      </template>
+    </draggable>
+    <!-- <div class="cloud" v-if="user && user.default.value" v-show="!showSug">
+      <Task mode="task" />
+    </div>
+    <EngineStore v-if="user && user.default.value" :show="data.engineStoreShow" @updateEngine="updateEngine" /> -->
   </div>
 </template>
 
 <script setup lang="ts">
-import icon from '../components/icon.vue'
+  import user from '../assets/store/user'
+  import engine from '../assets/store/engine'
+  import icon from '../components/icon.vue'
   import Header from './header.vue'
   import draggable from 'vuedraggable'
-  import api from '../assets/js/api'
+  // import api from '../assets/js/api'
 
-  import { useStore } from 'vuex'
-  import { useRouter, useRoute } from 'vue-router'
-  const store = useStore()
   const router = useRouter()
   const route = useRoute()
 
   let data = reactive({
     inputFocus: false,
     sugArr: [],
-    sugNow: null,
+    sugNow: -1,
     keyword:  '',
-        // 禁用任务
+    // 禁用任务
     disabledTask: false,
-        // 搜索引擎商店
+    // 搜索引擎商店
     engineStoreShow: '',
-    engines: store.state.engineArr,
+    // engineIndex: 0,
+    engineNow: computed(() => {return user.engineList.value[user.engineIndex.value]}),
+    engines: user.engineList.value
   })
-  
+  let showSug = computed(() => {return data.inputFocus && data.sugArr.length})
 
+  // console.log(user.engineList.value)
 
-  const GreatWallOut = computed(() =>  {
-    return store.state.GreatWallOut
-  })
-  const showSug = computed(() =>  {
-    return data.inputFocus && data.sugArr.length
-  })
-  const user = computed(() =>  {
-    return store.state.user
-  })
-  const userDefault = computed(() =>  {
-    return store.state.userDefault
-  })
-  const engineArr = computed(() =>  {
-    return store.state.engineArr
-  })
-  const engineIndex = computed(() =>  {
-    // console.log(typeof store.state.engineIndex, '=========')
-    return store.state.engineIndex
-  })
-  // console.log(engineIndex.value, '=========')
-  // let index = Number(engineIndex.value)
-  // let index:Number = 0
-  const engineNow = computed(() =>  {
-    console.log(engineArr)
-    // return engineArr[engineIndex]
-  })
-
-  const bindPrev = () => {
-
-  }
-  const bindLogo  = () => {
-
-  }
-  
-  // 下一个搜索引擎
-  const bindNext = () => {
-    // store.state.engineIndex = engineIndex + 1
-  }
-  const bindClear = () => {
-    store.state.keyword = ''
-    data.keyword = ''
-    data.sugArr = []
-    data.sugNow = null
-  }
-  const bindSearch = (value: any) => {
-    let keyword = encodeURIComponent(value || data.keyword)
-    const engine = engineNow
-    let url = ''
-    // if (store.state.isPC) {
-    //   url = engine.pc
-    //   // 有关键字
-    //   if (keyword) {
-    //     url = url.replace(Sea.re('#{keyword}'), keyword)
-    //   } else {
-    //     url = engine.home_pc || new URL(url).origin
-    //   }
-    // } else {
-    //   url = engine.mobile || engine.pc
-    //   // 有关键字
-    //   if (keyword) {
-    //     url = url.replace(Sea.re('#{keyword}'), keyword)
-    //   } else {
-    //     url = engine.home_mobile || new URL(url).origin
-    //   }
-    // }
-    // if (!engine.pc && engine.app) {
-    //   this.$alert('该引擎只有APP端可用', '提示', {
-    //     confirmButtonText: '确定',
-    //   })
-    //   return
-    // }
-    // Sea.open(url)
-  }
   const bindKeyDown = (event: any) => {
     // 解决光标bug
     if (event.keyCode === 38) {
@@ -168,117 +124,64 @@ import icon from '../components/icon.vue'
     }
   }
   const bindKeyUp = (event: any) => {
-    let code = event.keyCode
-    let now = data.sugNow === null ? -1 : data.sugNow
-    let len = data.sugArr.length
-    // if (code === 13) {
-    //   // 回车
-    //   bindSearch(null)
-    // } else if (code === 38) {
-    //   // 上
-    //   data.sugNow = (now + len - 1) % len
-    //   data.keyword = data.sugArr[data.sugNow]
-    //   // 下
-    // } else if (code === 40) {
-    //   data.sugNow = (now + len + 1) % len
-    //   data.keyword = data.sugArr[data.sugNow]
-    // }
   }
-  const bindInput = () => {
-    const value = data.keyword
-    if (!value) {
-      data.sugArr = []
-      data.sugNow = null
-      return
-    }
-    // 缓存关键字
-    store.state.keyword = value
-    const url = 'https://www.sogou.com/suggnew/ajajjson?type=web&key=' + encodeURI(value)
-    const script = document.createElement('script')
-    script.src = url
-    // const sug = Sea(this.$refs.sug)
-    // sug.child().remove()
-    // sug.appendChild(script)
+  const bindInput = (event: any) => {
   }
-  const bindFocus = () => {
-    data.inputFocus = true
-    if (data.keyword && data.sugArr.length === 0) {
-      bindInput()
-    }
+  const bindFocus = (event: any) => {
   }
   const bindBlur = () => {
     data.inputFocus = false
   }
+  const bindEngine = (index: any) => {
+    user.engineList.value = data.engines
+    user.engineIndex.value = index
+  }
+  // 上一个搜索引擎
+  const bindPrev = () => {
+    user.engineIndex.value = user.engineIndex.value - 1
+  }
+  // 下一个搜索引擎
+  const bindNext = () => {
+    user.engineIndex.value = user.engineIndex.value + 1
+  }
+  const bindClear = () => {
+    // store.state.keyword = ''
+    data.keyword = ''
+    data.sugArr = []
+    data.sugNow = -1
+  }
+  const bindSearch = (value: any) => {}
+  const bindUpdate = () => {
+      enginesSave()
+  }
+  const enginesSave = () => {}
+  const bindEngineAdd = () => {
+      // 检查登录
+      data.engineStoreShow = Date.now() + ',engineAdd'
+  }
+  const bindLogo = () => {
+    data.engineStoreShow = Date.now() + ',logo'
+  }
   
+  const updateEngine= (engine: any) => {
+    // 添加常用搜索引擎
+    let type = data.engineStoreShow.split(',')[1]
+    if (type === 'engineAdd') {
+      if (data.engines.find((e) => e.id === engine.id)) {
+        // message.info('已经有了')
+      } else {
+        data.engines.push(engine)
+        enginesSave()
+      }
+    } else {
+      // if (this.$refs.search) {
+      //   this.$refs.search.select()
+      // }
+    }
+  }
 </script>
-<!-- <script lang="ts">
-import api from '../assets/js/api'
-export default {
-  data() {
-    return {
-      account: '',
-      password: '',
-      token: '',
-    }
-  },
-  methods: {
-    async bindUserDefault() {
-      const res = await api.request({
-        method: 'POST',
-        url: '/v3/userDefault.get',
-      })
-      console.log('🌊', res)
-    },
-    async bindEngineList() {
-      const res = await api.request({
-        method: 'POST',
-        url: '/v3/engine.list',
-      })
-      console.log('🌊', res)
-    },
-    async bindLogin() {
-      const res = await api.request({
-        method: 'POST',
-        url: '/v3/user.login',
-        data: {
-          account: this.account,
-          password: this.password,
-        },
-      })
-      console.log('🌊', res)
-      this.token = res.token
-    },
-    async bindUser() {
-      const res = await api.request({
-        method: 'POST',
-        url: '/v3/user.get',
-        data: {
-          token: this.token,
-        },
-      })
-      console.log('🌊', res)
-    },
-  },
-}
-</script> -->
-
-<!-- <style lang="scss">
-.page-index {
-  h1 {
-    background-image: linear-gradient(45deg, var(--primary), var(--danger));
-    background-clip: text;
-    color: transparent;
-    font-weight: 300;
-  }
-  .route {
-    a + a {
-      margin-left: 20px;
-    }
-  }
-}
-</style> -->
 <style lang="scss">
-#Index {
+#index {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -293,7 +196,7 @@ export default {
     .btn {
       cursor: pointer;
       padding: 4px 8px;
-      color: #eee;
+      color: #848484;
       margin-top: 2px;
     }
 

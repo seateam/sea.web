@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="user">
-        <el-image v-if="playing" :src="song.cover" class="cover" alt="唱片" @click="bindPause" />
+        <el-image v-if="user.songPlaying.value" :src="user.song.value" class="cover" alt="唱片" @click="bindPause" />
         <div class="yezi" @click="bindBook">
           <icon name="yezi" />
         </div>
@@ -25,7 +25,7 @@
             <div class="border-up-empty">
               <span></span>
             </div>
-            <div class="app music" :class="{ playing: playing }" @click="bindMusic">
+            <div class="app music" :class="{ playing: user.songPlaying.value }" @click="bindMusic">
               <icon name="music" />
               <span>音乐</span>
             </div>
@@ -44,7 +44,7 @@
           </div>
         </div>
         <div @click="bindLogin" class="head">
-          <el-image :src="userAvatar">
+          <el-image :src="user.avatar.value">
             <div slot="error">
               <i class="el-icon-picture-outline"></i>
             </div>
@@ -55,31 +55,38 @@
         </div>
       </div>
     </div>
-    <template v-if="data.tabType === 'Back'">
+    <!--  v-if="data.tabType === 'Back'" -->
+    <template>
       <div class="back" @click="bindBack">
         <icon name="back" />
       </div>
       <a name="0" />
       <div class="placeholder">
-        <span>{{ title }}</span>
+        <span>{{ user.title.value }}</span>
       </div>
     </template>
   </div>
 </template>
 <script setup lang="ts">
 import icon from '../components/icon.vue'
-import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
-const store = useStore()
+import user from '../assets/store/user'
+import engine from '../assets/store/engine'
 const router = useRouter()
 const route = useRoute()
 
 const data = reactive({
-  tabType: '',
+  // tabType: '',
   tabNow: 0,
   boxShow: false,
-  tabs: store.state.tabs,
+  tabs: toRaw(user.tabs.value),
+  // title: user.title.value,
+  // playing: user.songPlaying.value,
+  // song: user.song.value,
+  // userAvatar: user.avatar.value, // 头像
+  account: '',
+  password: '',
 })
+
 
 const bindTab = (i: any) => {
   if (data.tabNow !== i) {
@@ -90,51 +97,15 @@ const bindTab = (i: any) => {
     }
   }
 }
-watch(
-  () => route,
-  (route) => {
-    let type = 'Back'
-    for (let i = 0; i < data.tabs.length; i++) {
-      const e = data.tabs[i]
-      if (e.path === route.path) {
-        type = 'Tab'
-        if (i > -1) {
-          data.tabNow = i
-        }
-        break
-      }
-    }
-    if (data.tabType !== type) {
-      data.tabType = type
-      if (typeof [`init${type}`] === 'function') {
-        // [`init${type}`]()
-      }
-    }
-  },
-)
-const title = computed(() => {
-  return store.state.title
-})
-const userAvatar = computed(() => {
-  return store.getters.getUserAvatar
-})
-const user = computed(() => {
-  return store.getters.getUser
-})
-// 歌曲状态
-const song = computed(() => {
-  return store.state.song
-})
-const playing = computed(() => {
-  return store.state.songPlaying
-})
-
+const bindBook = () => {
+  router.push('/book')
+}
+const bindMask = () => {
+  data.boxShow = false
+}
 // 暂停
 const bindPause = () => {
   bindMusic()
-}
-const bindBook = () => {
-  router.push('/book')
 }
 const bindMusic = () => {
   router.push('/music')
@@ -148,83 +119,14 @@ const bindHelp = () => {
 const bindCommunism = () => {
   router.push('/note/1')
 }
-const bindLogin = () => {
-  router.push('/mine')
-}
-const bindMask = () => {
-  data.boxShow = false
+const bindLogin = async () => {
+  await user.login(data.account, data.password)
+  console.log('🌊', toRaw(user.markList.value))
 }
 const bindBack = () => {
   router.back()
 }
 </script>
-<!-- <script lang="ts">
-import {toRefs, onMounted, computed } from 'vue'
-import { useStore } from 'vuex'
-export default defineComponent({
-    name: "Home",
-    setup() {
-        const store = useStore()
-        const state = reactive({
-            tabType: '',
-            tabs: store.state.tabs,
-            tabNow: 0,
-            boxShow: false,
-            playing: computed(() => store.state.songPlaying),
-            userAvatar: computed(() => store.state.getUserAvatar),
-            user: computed(() => store.state.getUser),
-            song: computed(() => store.state.song),
-            title: computed(() => store.state.title),
-        })
-        onMounted(() => {
-            console.log('wahhhhhh')
-        })
-        const bindTab = (i:any) => {
-            console.log('ddd')
-        }
-        const bindPause = () => {
-            console.log('ddd')
-        }
-        const bindBook = () => {
-            console.log('ddd')
-        }
-        const bindMusic = () => {
-            console.log('ddd')
-        }
-        const bindTask = () => {
-            console.log('ddd')
-        }
-        const bindHelp = () => {
-            console.log('ddd')
-        }
-        const bindCommunism = () => {
-            console.log('ddd')
-        }
-        const bindLogin = () => {
-            console.log('ddd')
-        }
-        const bindMask = () => {
-            // this.$router.back()
-        }
-        const bindBack = () => {
-
-        }
-    return {
-      ...toRefs(state),
-        bindTab,
-        bindPause,
-        bindBook,
-        bindMusic,
-        bindTask,
-        bindHelp,
-        bindCommunism,
-        bindLogin,
-        bindMask,
-        bindBack,
-    };
-    },
-});
-</script> -->
 <style lang="scss">
 $height: 32px;
 $marginTop: 20px;

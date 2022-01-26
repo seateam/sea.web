@@ -39,7 +39,66 @@ const user = reactive({
   // 书签
   markList: [] as MarkList[],
   // 搜索引擎
-  engineList: [] as Engine[],
+  engineList: [
+    {
+      name: '大海',
+      color: '#0F60AB',
+      pc: 'https://www.sogou.com/web?query=#{keyword}',
+      mobile: 'https://m.sogou.com/web/searchList.jsp?keyword=#{keyword}',
+      id: 5,
+      outwall: false,
+      tags: ['综合'],
+      icon: 'sea',
+      app: '',
+      home_pc: 'https://sogou.com/',
+      home_mobile: 'https://m.sogou.com/',
+    },
+    {
+      name: 'Google',
+      color: '#4683ea',
+      pc: 'https://www.google.com/search?q=#{keyword}',
+      mobile: '',
+      outwall: true,
+      id: 1,
+      tags: ['综合'],
+      icon: 'google',
+      app: '',
+      home_pc: 'https://www.google.com/',
+      home_mobile: '',
+    },
+    {
+      name: '必应',
+      color: '#409eff',
+      pc: 'https://www.bing.com/search?q=#{keyword}&mkt=zh-CN',
+      mobile: '',
+      id: 2,
+      outwall: false,
+      tags: ['综合'],
+      icon: 'biying',
+      app: '',
+      home_pc: 'https://www.bing.com/',
+      home_mobile: '',
+    },
+  ] as Engine[],
+  engineIndex: 0,
+  // 墙外 读取本地存储
+  GreatWallOut: window.localStorage.getItem('GreatWallOut') || false,
+  // 标签页
+  tabs: [
+    {
+      name: '探索',
+      path: '/',
+    },
+    {
+      name: '记录',
+      path: '/note',
+    },
+  ],
+  // 标题
+  title: '',
+  // 音乐
+  song: '',
+  songPlaying: false,
   // 笔记
   noteList: [] as NoteList[],
   // 微信
