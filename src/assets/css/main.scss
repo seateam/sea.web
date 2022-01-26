@@ -1,12 +1,24 @@
 :root {
   // 中国传统色
-  --color: #303133;
+  // 纟赖见
+  --text: #151d29;
   // 碧城
   --primary: #12507b;
+  --primary-1: #2a6288;
+  --primary-2: #417395;
+  --primary-3: #5985a3;
+  --primary-4: #7196b0;
+  --primary-5: #89a8bd;
+  --primary-6: #a0b9ca;
+  --primary-7: #b8cbd7;
+  --primary-8: #d0dce5;
+  --primary-9: #e7eef2;
   // 浅云
   --background: #eaeef1;
   // 水华朱
   --danger: #a72126;
+
+  // 已访问
   --visited: #89a8bd;
 }
 
@@ -18,7 +30,7 @@
 }
 
 html {
-  color: var(--color);
+  color: var(--text);
   background: #b8cbd7;
   font-size: 16px;
   font-weight: 300;
