@@ -17,7 +17,6 @@
 <script lang="ts" setup>
 import user from '../../assets/store/user'
 import engine from '../../assets/store/engine'
-import IconApp from '../../components/icon-app.vue'
 
 const data = reactive({
   account: '',

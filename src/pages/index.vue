@@ -20,7 +20,10 @@
       <div
         class="btn right"
         @click="bindNext"
-        :style="{ visibility: user.engineIndex.value >= user.engineList.value.length - 1 ? 'hidden' : 'visible' }"
+        :style="{
+          visibility:
+            user.engineIndex.value >= user.engineList.value.length - 1 ? 'hidden' : 'visible',
+        }"
       >
         <icon name="next" />
       </div>
@@ -90,95 +93,94 @@
 </template>
 
 <script setup lang="ts">
-  import user from '../assets/store/user'
-  import engine from '../assets/store/engine'
-  import icon from '../components/icon.vue'
-  import Header from './header.vue'
-  import draggable from 'vuedraggable'
-  // import api from '../assets/js/api'
+import user from '../assets/store/user'
+import engine from '../assets/store/engine'
+import draggable from 'vuedraggable'
+// import api from '../assets/js/api'
 
-  const router = useRouter()
-  const route = useRoute()
+const router = useRouter()
+const route = useRoute()
 
-  let data = reactive({
-    inputFocus: false,
-    sugArr: [],
-    sugNow: -1,
-    keyword:  '',
-    // 禁用任务
-    disabledTask: false,
-    // 搜索引擎商店
-    engineStoreShow: '',
-    // engineIndex: 0,
-    engineNow: computed(() => {return user.engineList.value[user.engineIndex.value]}),
-    engines: user.engineList.value
-  })
-  let showSug = computed(() => {return data.inputFocus && data.sugArr.length})
+let data = reactive({
+  inputFocus: false,
+  sugArr: [],
+  sugNow: -1,
+  keyword: '',
+  // 禁用任务
+  disabledTask: false,
+  // 搜索引擎商店
+  engineStoreShow: '',
+  // engineIndex: 0,
+  engineNow: computed(() => {
+    return user.engineList.value[user.engineIndex.value]
+  }),
+  engines: user.engineList.value,
+})
+let showSug = computed(() => {
+  return data.inputFocus && data.sugArr.length
+})
 
-  // console.log(user.engineList.value)
+// console.log(user.engineList.value)
 
-  const bindKeyDown = (event: any) => {
-    // 解决光标bug
-    if (event.keyCode === 38) {
-      event.preventDefault()
-    }
+const bindKeyDown = (event: any) => {
+  // 解决光标bug
+  if (event.keyCode === 38) {
+    event.preventDefault()
   }
-  const bindKeyUp = (event: any) => {
-  }
-  const bindInput = (event: any) => {
-  }
-  const bindFocus = (event: any) => {
-  }
-  const bindBlur = () => {
-    data.inputFocus = false
-  }
-  const bindEngine = (index: any) => {
-    user.engineList.value = data.engines
-    user.engineIndex.value = index
-  }
-  // 上一个搜索引擎
-  const bindPrev = () => {
-    user.engineIndex.value = user.engineIndex.value - 1
-  }
-  // 下一个搜索引擎
-  const bindNext = () => {
-    user.engineIndex.value = user.engineIndex.value + 1
-  }
-  const bindClear = () => {
-    // store.state.keyword = ''
-    data.keyword = ''
-    data.sugArr = []
-    data.sugNow = -1
-  }
-  const bindSearch = (value: any) => {}
-  const bindUpdate = () => {
-      enginesSave()
-  }
-  const enginesSave = () => {}
-  const bindEngineAdd = () => {
-      // 检查登录
-      data.engineStoreShow = Date.now() + ',engineAdd'
-  }
-  const bindLogo = () => {
-    data.engineStoreShow = Date.now() + ',logo'
-  }
-  
-  const updateEngine= (engine: any) => {
-    // 添加常用搜索引擎
-    let type = data.engineStoreShow.split(',')[1]
-    if (type === 'engineAdd') {
-      if (data.engines.find((e) => e.id === engine.id)) {
-        // message.info('已经有了')
-      } else {
-        data.engines.push(engine)
-        enginesSave()
-      }
+}
+const bindKeyUp = (event: any) => {}
+const bindInput = (event: any) => {}
+const bindFocus = (event: any) => {}
+const bindBlur = () => {
+  data.inputFocus = false
+}
+const bindEngine = (index: any) => {
+  user.engineList.value = data.engines
+  user.engineIndex.value = index
+}
+// 上一个搜索引擎
+const bindPrev = () => {
+  user.engineIndex.value = user.engineIndex.value - 1
+}
+// 下一个搜索引擎
+const bindNext = () => {
+  user.engineIndex.value = user.engineIndex.value + 1
+}
+const bindClear = () => {
+  // store.state.keyword = ''
+  data.keyword = ''
+  data.sugArr = []
+  data.sugNow = -1
+}
+const bindSearch = (value: any) => {}
+const bindUpdate = () => {
+  enginesSave()
+}
+const enginesSave = () => {}
+const bindEngineAdd = () => {
+  // 检查登录
+  data.engineStoreShow = Date.now() + ',engineAdd'
+}
+const bindLogo = () => {
+  data.engineStoreShow = Date.now() + ',logo'
+}
+
+const updateEngine = (engine: any) => {
+  // 添加常用搜索引擎
+  let type = data.engineStoreShow.split(',')[1]
+  if (type === 'engineAdd') {
+    if (data.engines.find((e) => e.id === engine.id)) {
+      // message.info('已经有了')
     } else {
-      // if (this.$refs.search) {
-      //   this.$refs.search.select()
-      // }
+      data.engines.push(engine)
+      enginesSave()
     }
+  } else {
+    // if (this.$refs.search) {
+    //   this.$refs.search.select()
+    // }
   }
+}
 </script>
 <style lang="scss">
 #index {
