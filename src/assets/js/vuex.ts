@@ -1,7 +1,7 @@
-import { createStore } from "vuex";
+import { createStore } from 'vuex'
 // 浏览器
-import Bowser from "bowser";
-const browser = Bowser.getParser(window.navigator.userAgent).getResult();
+import Bowser from 'bowser'
+const browser = Bowser.getParser(window.navigator.userAgent).getResult()
 // 创建一个新的 store 实例
 const vuex = createStore({
   state() {
@@ -75,7 +75,7 @@ const vuex = createStore({
       // 音乐
       song: null,
       songPlaying: false,
-    };
+    }
   },
   // 获取
   getters: {
@@ -85,7 +85,7 @@ const vuex = createStore({
     // 获取头像
     getUserAvatar(state: any) {
       const user = state.user
-      let avatar = '/src/assets/imgs/head.png'
+      let avatar = '../img/head.png'
       if (user && user.avatar) {
         avatar = user.avatar
       }
@@ -105,5 +105,5 @@ const vuex = createStore({
   actions: {},
   // 模块
   modules: {},
-});
-export default vuex;
+})
+export default vuex
